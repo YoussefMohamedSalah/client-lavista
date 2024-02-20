@@ -1,20 +1,20 @@
-import CreateVillageForm from "@/components/village/create-village-form";
 import { DashboardHeader } from "@/components/header";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { BASE_API_URL } from "@/constants/constants";
-import { ALL_LOCATIONS_ENDPOINT } from "@/constants/routes";
+import { ALL_SECTIONS_ENDPOINT } from "@/constants/routes";
+import CreateItemForm from "@/components/items/create-item-form";
 
 export const metadata: Metadata = {
   title: "Create Village"
 };
 
-export default async function CreateVillagePage() {
+export default async function CreateSectionPage() {
   const session = await getServerSession(authOptions);
 
   const apiResponse = await fetch(
-    `${BASE_API_URL}${ALL_LOCATIONS_ENDPOINT}`,
+    `${BASE_API_URL}${ALL_SECTIONS_ENDPOINT}`,
     {
       method: "GET",
       headers: {
@@ -24,11 +24,12 @@ export default async function CreateVillagePage() {
     }
   );
 
-  const locations = await apiResponse.json();
+  const sections = await apiResponse.json();
+
   return (
     <div>
-      <DashboardHeader heading="Create Village" />
-      <CreateVillageForm locations={locations} />
+      <DashboardHeader heading="Create Section" />
+      <CreateItemForm sections={sections} />
     </div>
   );
 }

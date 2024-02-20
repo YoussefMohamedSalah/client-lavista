@@ -16,7 +16,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
       <NextTopLoader color="#0095D8" showSpinner={false} />
       <div className="flex min-h-screen flex-col space-y-6">
         <header className="sticky top-0 z-40 border-b bg-background">
-          <div className="container flex h-16 py-4">
+          <div className="flex h-16 py-4 xl:px-20"> {/* Modified class */}
             <MainNav items={dashboardConfig.mainNav} />
             <div className="flex my-auto ml-auto gap-4">
               <ModeToggle />
@@ -24,7 +24,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
             </div>
           </div>
         </header>
-        <div className="container grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
+        <div className="xl:px-20 px-2 grid flex-1 gap-12 md:grid-cols-[200px_1fr]">
           <aside className="hidden w-[200px] flex-col md:flex">
             <DashboardNav items={dashboardConfig.sidebarNav} />
           </aside>
@@ -35,5 +35,6 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
         <SiteFooter className="border-t" />
       </div>
     </div>
+
   );
 }

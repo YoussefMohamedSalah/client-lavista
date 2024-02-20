@@ -49,9 +49,11 @@ export const BRAND_SUBMISSIONS_ENDPOINT = "/staff/brand-submissions/";
  */
 export const ALL_LOCATIONS_ENDPOINT = "/lavista/locations/";
 export const ALL_VILLAGES_ENDPOINT = "/lavista/villages/";
+export const ALL_SECTIONS_ENDPOINT = "/lavista/sections/";
 
 
 export const LOCATIONS_ENDPOINT = "/location/";
 export const VILLAGES_ENDPOINT = "/village/";
 export const SECTIONS_ENDPOINT = "/section/";
+export const ITEMS_ENDPOINT = "/section/";
 

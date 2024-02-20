@@ -11,9 +11,8 @@ export const villageService = {
 const VILLAGE_URL = `${BASE_API_URL}${VILLAGES_ENDPOINT}`;
 
 async function createVillage(name: string, id: string[]) {
-    return await fetchWrapper.post(`${VILLAGE_URL}`, {
-        name,
-        id: id[0]
+    return await fetchWrapper.post(`${VILLAGE_URL}${id[0]}`, {
+        name
     });
 }
 

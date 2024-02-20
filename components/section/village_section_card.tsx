@@ -1,70 +1,62 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle
-} from "@/components/ui/card";
-import { getServerSession } from "next-auth/next";
-import Link from "next/link";
+"use client"
+import { useState } from "react";
+import ItemsTable from "../items/items-table";
+import { BASE_API_URL } from "@/constants/constants";
+import { Session } from "next-auth";
+import { SECTIONS_ENDPOINT } from "@/constants/routes";
 
 interface Props {
-  url: string;
-}
+  session: Session | null;
+  sections: any[];
+  items: any[];
+};
 
-export default async function VillageSectionsCards({ url }: Props) {
+export default async function VillageSectionsCards({ session, sections, items }: Props) {
+  const [selectedSection, setSelectedSection] = useState<string | null>(null);
+  const [itemsToShow, setItemsToShow] = useState<any[]>([...items])
 
-  const session = await getServerSession(authOptions);
-  const apiResponse = await fetch(url, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${session?.user.accessToken}`,
-    },
-  });
-
-  const village: any = await apiResponse.json();
-  const { mechanics_section, electronics_section, landScape_section, technicalValidity_section } = village;
-  console.log(village)
+  const handleSectionChange = async (sectionId: string) => {
+    if (sectionId) {
+      if (sectionId === "All") {
+        return setItemsToShow([...items]);
+      }
+      else if (sectionId !== "All" && session) {
+        const itemsResponse = await fetch(`${BASE_API_URL}${SECTIONS_ENDPOINT}items/${sectionId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${session?.user.accessToken}`,
+          },
+        });
+        const items: any[] = await itemsResponse.json();
+        return setItemsToShow([...items]);
+      }
+    }
+  }
 
   return (
-    <div className="mt-4 grid grid-cols-2 md:grid-cols-2 gap-3 pt-2">
-      {mechanics_section && (
-        <Link href={`/admin/mechanics/${mechanics_section?.id}`} key={mechanics_section?.id!}>
-          <Card>
-            <CardHeader>
-              <CardTitle>Mechanics Section</CardTitle>
-            </CardHeader>
-          </Card>
-        </Link>
+    <>
+      {sections && sections?.length > 0 ? (
+        <>
+          {/* {sections?.map((section: any) => (
+            <div onClick={() => handleSectionChange(section.id)} key={section?.id!}>
+              <Card>
+                <CardHeader>
+                  <CardTitle>{section.name}</CardTitle>
+                </CardHeader>
+              </Card>
+            </div>
+          )
+          )} */}
+        </>
+      ) : (
+        <div className="container flex w-screen flex-col items-center justify-center mt-10">
+          <h1 className="text-2xl font-semibold tracking-tight">
+            No Villages For This Location!
+          </h1>
+        </div>
       )}
-      {electronics_section && (
-        <Link href={`/admin/electronics/${electronics_section?.id}`} key={electronics_section?.id!}>
-          <Card>
-            <CardHeader>
-              <CardTitle>Electronics Section</CardTitle>
-            </CardHeader>
-          </Card>
-        </Link>
-      )}
-      {landScape_section && (
-        <Link href={`/admin/land-scape/${landScape_section?.id}`} key={landScape_section?.id!}>
-          <Card>
-            <CardHeader>
-              <CardTitle>LandScape Section</CardTitle>
-            </CardHeader>
-          </Card>
-        </Link>
-      )}
-      {technicalValidity_section && (
-        <Link href={`/admin/tech-validity/${technicalValidity_section?.id}`} key={technicalValidity_section?.id!}>
-          <Card>
-            <CardHeader>
-              <CardTitle>Tech Validity Section</CardTitle>
-            </CardHeader>
-          </Card>
-        </Link>
-      )}
-    </div>
+      <ItemsTable items={itemsToShow} />
+    </>
   );
 }

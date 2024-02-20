@@ -1,20 +1,20 @@
-import CreateBrandForm from "@/components/brand/create-brand-form";
+import CreateSectionForm from "@/components/section/create-section-form";
 import { DashboardHeader } from "@/components/header";
 import { Metadata } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { BASE_API_URL } from "@/constants/constants";
-import { ALL_SHOPPING_CATEGORIES_ENDPOINT } from "@/constants/routes";
+import { ALL_VILLAGES_ENDPOINT } from "@/constants/routes";
 
 export const metadata: Metadata = {
-  title: "Create brand",
+  title: "Create Village"
 };
 
-export default async function CreateBrandPage() {
+export default async function CreateSectionPage() {
   const session = await getServerSession(authOptions);
 
   const apiResponse = await fetch(
-    `${BASE_API_URL}${ALL_SHOPPING_CATEGORIES_ENDPOINT}`,
+    `${BASE_API_URL}${ALL_VILLAGES_ENDPOINT}`,
     {
       method: "GET",
       headers: {
@@ -24,12 +24,13 @@ export default async function CreateBrandPage() {
     }
   );
 
-  const shoppingCategories = await apiResponse.json();
+  const villages = await apiResponse.json();
 
+  console.log(villages)
   return (
     <div>
-      <DashboardHeader heading="Create brand"></DashboardHeader>
-      <CreateBrandForm shoppingCategories={shoppingCategories} />
+      <DashboardHeader heading="Create Section" />
+      <CreateSectionForm villages={villages} />
     </div>
   );
 }

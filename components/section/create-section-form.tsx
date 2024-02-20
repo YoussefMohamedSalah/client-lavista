@@ -1,13 +1,12 @@
 "use client";
 
-import { villageFormSchema } from "@/lib/validations/village";
+import { sectionFormSchema } from "@/lib/validations/section";
 import { Input } from "../ui/input";
 import * as z from "zod";
 import * as React from "react";
 import { useToast } from "../ui/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { locationService } from "@/services/location.service";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
@@ -21,24 +20,24 @@ import {
   FormMessage
 } from "@/components/ui/form";
 import { MultiSelect } from "../ui/multi-select";
-import { villageService } from "@/services/village.service";
+import { sectionService } from "@/services/section.service";
 
-type FormData = z.infer<typeof villageFormSchema>;
+type FormData = z.infer<typeof sectionFormSchema>;
 
-interface CreateVillageFormProps {
-  locations: any[];
+interface CreateSectionFormProps {
+  villages: any[];
 }
 
-export default function CreateVillageForm({
-  locations
-}: CreateVillageFormProps) {
+export default function CreateSectionForm({
+  villages
+}: CreateSectionFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const router = useRouter();
 
   const { toast } = useToast();
 
-  const form = useForm<z.infer<typeof villageFormSchema>>({
-    resolver: zodResolver(villageFormSchema),
+  const form = useForm<z.infer<typeof sectionFormSchema>>({
+    resolver: zodResolver(sectionFormSchema),
     defaultValues: {
       location: []
     }
@@ -46,7 +45,7 @@ export default function CreateVillageForm({
 
   async function onSubmit(data: FormData) {
     setIsLoading(true);
-    const apiResponse = await villageService.createVillage(
+    const apiResponse = await sectionService.createSection(
       data.name,
       data.location
     );
@@ -76,7 +75,7 @@ export default function CreateVillageForm({
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="Village name" {...field} />
+                <Input placeholder="Section name" {...field} />
               </FormControl>
               <FormDescription />
               <FormMessage />
@@ -87,12 +86,12 @@ export default function CreateVillageForm({
           name="location"
           render={({ field }) =>
             <FormItem>
-              <FormLabel>Select Location</FormLabel>
+              <FormLabel>Select Village</FormLabel>
               <MultiSelect
                 selected={field.value}
-                options={locations.map(location => ({
-                  label: location.name,
-                  value: location.id.toString()
+                options={villages.map(village => ({
+                  label: village.name,
+                  value: village.id.toString()
                 }))}
                 {...field}
                 className="sm:w-[510px]"

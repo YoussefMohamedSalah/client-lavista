@@ -27,13 +27,13 @@ export default async function DashboardCards() {
     },
   });
 
-  const data:any = await apiResponse.json();
+  const locations: any = await apiResponse.json();
 
   return (
-    <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-3 pt-2">
-      {data && data?.locations?.length > 0 ? (
+    <div className="mt-4 grid grid-cols-2 md:grid-cols-2 gap-3 pt-2">
+      {locations && locations?.length > 0 ? (
         <>
-          {data?.locations?.map((location: any) => (
+          {locations?.map((location: any) => (
             <Link href={`/admin/locations/${location?.id}`} key={location?.id!}>
               <Card>
                 <CardHeader>
@@ -50,7 +50,7 @@ export default async function DashboardCards() {
       ) : (
         <div className="container flex w-screen flex-col items-center justify-center mt-10">
           <h1 className="text-2xl font-semibold tracking-tight">
-            No Location Data!
+            No Locations Exists!
           </h1>
         </div>
       )}

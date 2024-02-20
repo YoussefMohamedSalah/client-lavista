@@ -16,7 +16,7 @@ export default async function SingleLocationPage({
 
 
   const session = await getServerSession(authOptions);
-  const apiResponse = await fetch(`${BASE_API_URL}${LOCATIONS_ENDPOINT}village/${params.id}`, {
+  const apiResponse = await fetch(`${BASE_API_URL}${LOCATIONS_ENDPOINT}villages/${params.id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -24,13 +24,12 @@ export default async function SingleLocationPage({
     },
   });
 
-  const location: any = await apiResponse.json();
-  const {name, villages} = location;
-
+  const villages: any[] = await apiResponse.json();
+  let locationName = villages[0]?.location?.name! || "";
 
   return (
     <div>
-      <VillageHeader heading={`${name} Villages`} text="Create and manage villages" />
+      <VillageHeader heading={`${locationName} Villages`} text="Create and manage villages" />
       <Suspense fallback={<DashboardLoadingSkeleton />}>
         <LocationVillageCards villages={villages} />
       </Suspense>

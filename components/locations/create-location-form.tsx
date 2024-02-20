@@ -23,24 +23,15 @@ import {
 
 type FormData = z.infer<typeof locationFormSchema>;
 
-interface CreateLocationFormProps {
-  shoppingCategories: any[];
-}
-
-export default function CreateLocationForm({
-  shoppingCategories
-}: CreateLocationFormProps) {
+export default function CreateLocationForm() {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const router = useRouter();
-
   const { toast } = useToast();
-
   const form = useForm<z.infer<typeof locationFormSchema>>({
     resolver: zodResolver(locationFormSchema)
   });
 
   async function onSubmit(data: FormData) {
-    console.log("test");
     setIsLoading(true);
     const apiResponse = await locationService.createLocation(data.name);
     setIsLoading(false);
