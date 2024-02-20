@@ -1,13 +1,13 @@
 "use client";
 
-import { locationFormSchema } from "@/lib/validations/location";
+import { sectionFormSchema } from "@/lib/validations/section";
 import { Input } from "../ui/input";
 import * as z from "zod";
 import * as React from "react";
 import { useToast } from "../ui/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { locationService } from "@/services/location.service";
+import { sectionService } from "@/services/section.service";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
@@ -21,19 +21,26 @@ import {
     FormMessage
 } from "@/components/ui/form";
 
-type FormData = z.infer<typeof locationFormSchema>;
+type FormData = z.infer<typeof sectionFormSchema>;
 
-export default function CreateLocationForm() {
+interface Props {
+    villageId: string;
+}
+
+export default function CreateSectionForm({ villageId }: Props) {
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const router = useRouter();
     const { toast } = useToast();
-    const form = useForm<z.infer<typeof locationFormSchema>>({
-        resolver: zodResolver(locationFormSchema)
+    const form = useForm<z.infer<typeof sectionFormSchema>>({
+        resolver: zodResolver(sectionFormSchema)
     });
 
     async function onSubmit(data: FormData) {
         setIsLoading(true);
-        const apiResponse = await locationService.createLocation(data.name);
+        const apiResponse = await sectionService.createSection(
+            data.name,
+            villageId
+        );
         setIsLoading(false);
         if (!apiResponse.error) {
             router.refresh();
@@ -60,7 +67,7 @@ export default function CreateLocationForm() {
                         <FormItem>
                             <FormLabel>Name</FormLabel>
                             <FormControl>
-                                <Input placeholder="Location name" {...field} />
+                                <Input placeholder="Section name" {...field} />
                             </FormControl>
                             <FormDescription />
                             <FormMessage />
@@ -70,6 +77,7 @@ export default function CreateLocationForm() {
                     disabled={isLoading}
                     type="submit"
                     className="w-1/2"
+                    onClick={() => console.log("test")}
                 >
                     {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
                     Create

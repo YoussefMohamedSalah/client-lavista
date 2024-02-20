@@ -1,21 +1,21 @@
-import DashboardCards from "@/components/dashboard/dashboard-cards";
-import DashboardLoadingSkeleton from "@/components/dashboard/dashboard-loading";
 import { Metadata } from "next";
 import { Suspense } from "react";
-import { LocationHeader } from "@/components/locations/location-header";
+import { PageHeader } from "@/components/page-header";
+import CardsLoadingSkeleton from "@/components/loading/cards-loading";
+import DashboardCards from "@/components/dashboard/dashboard-cards";
 
 export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "Lavista Dashboard"
+    title: "Dashboard",
+    description: "Lavista Dashboard"
 };
 
 export default async function DashboardPage() {
-  return (
-    <div>
-      <LocationHeader heading="Dashboard" text="Admin Panel" />
-      <Suspense fallback={<DashboardLoadingSkeleton />}>
-        <DashboardCards />
-      </Suspense>
-    </div>
-  );
+    return (
+        <div>
+            <PageHeader heading="Dashboard" text="Admin Dashboard" />
+            <Suspense fallback={<CardsLoadingSkeleton />}>
+                <DashboardCards />
+            </Suspense>
+        </div>
+    );
 }

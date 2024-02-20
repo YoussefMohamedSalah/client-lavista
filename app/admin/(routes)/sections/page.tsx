@@ -28,7 +28,7 @@ export default async function LocationsPage() {
 
 	return (
 		<div>
-			<PageHeader heading="Villages" text="Lavista Villages" />
+			<PageHeader heading="Villages" text="Lavista Villages" btnText="Add Village" btnHref="/admin/villages/create/" />
 			<Suspense fallback={<CardsLoadingSkeleton />}>
 				<VillagesCards villages={villages} />
 			</Suspense>

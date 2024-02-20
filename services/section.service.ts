@@ -10,8 +10,8 @@ export const sectionService = {
 
 const SECTION_URL = `${BASE_API_URL}${SECTIONS_ENDPOINT}`;
 
-async function createSection(name: string, id: string[]) {
-    return await fetchWrapper.post(`${SECTION_URL}${id[0]}`, {
+async function createSection(name: string, id: string) {
+    return await fetchWrapper.post(`${SECTION_URL}${id}`, {
         name
     });
 }
