@@ -20,13 +20,16 @@ import {
     FormLabel,
     FormMessage
 } from "@/components/ui/form";
+import { PoolCreateType, itemService } from "@/services/item.service";
 
 type FormData = z.infer<typeof poolItemFormSchema>;
 
 interface Props {
+    itemTypeId: string;
+    sectionId: string;
 }
 
-export default function PoolItemForm({ }: Props) {
+export default function PoolItemForm({ sectionId, itemTypeId }: Props) {
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const router = useRouter();
     const { toast } = useToast();
@@ -36,10 +39,18 @@ export default function PoolItemForm({ }: Props) {
 
     async function onSubmit(data: FormData) {
         setIsLoading(true);
-        const apiResponse = await villageService.createVillage(
-            data.name,
-            "123"
-        );
+
+        const createPoolObj: PoolCreateType = {
+            sectionId: sectionId,
+            itemTypeId: itemTypeId,
+            name: data.name,
+            count: data.count,
+            details: data.details,
+            state: data.state,
+            notes: data.notes,
+        }
+
+        const apiResponse = await itemService.createPoolItem(createPoolObj);
         setIsLoading(false);
         if (!apiResponse.error) {
             router.refresh();
@@ -73,12 +84,12 @@ export default function PoolItemForm({ }: Props) {
                     />
                     <FormField
                         control={form.control}
-                        name="serial_num"
+                        name="count"
                         render={({ field }) =>
                             <FormItem>
-                                <FormLabel>Serial Number</FormLabel>
+                                <FormLabel>Item Count</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Serial Number" {...field} />
+                                    <Input placeholder="Item Count" {...field} />
                                 </FormControl>
                                 <FormDescription />
                                 <FormMessage />

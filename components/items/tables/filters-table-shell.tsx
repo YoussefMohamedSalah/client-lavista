@@ -12,9 +12,11 @@ interface UsersTableShellProps {
     data: Item[];
     pageCount: number;
     itemTypes: any[];
+    selectedItemType: any;
+    selectedSectionId: string;
 }
 
-export function FiltersItemsTableShell({ data, pageCount, itemTypes }: UsersTableShellProps) {
+export function FiltersItemsTableShell({ data, pageCount, itemTypes, selectedItemType, selectedSectionId }: UsersTableShellProps) {
 
     // Memoize the columns so they don't re-render on every render
     const columns = React.useMemo<ColumnDef<Item, unknown>[]>(
@@ -191,7 +193,7 @@ export function FiltersItemsTableShell({ data, pageCount, itemTypes }: UsersTabl
 
     return (
         <>
-            <ItemsFormModal itemTypes={itemTypes} />
+            <ItemsFormModal itemTypes={itemTypes} defaultItemType={selectedItemType} selectedSectionId={selectedSectionId} />
             <DataTable
                 columns={columns}
                 data={data}

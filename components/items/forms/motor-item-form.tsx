@@ -7,7 +7,7 @@ import * as React from "react";
 import { useToast } from "../../ui/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { villageService } from "@/services/village.service";
+import { MotorCreateType, itemService } from "@/services/item.service";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
@@ -24,9 +24,11 @@ import {
 type FormData = z.infer<typeof motorItemFormSchema>;
 
 interface Props {
+    itemTypeId: string;
+    sectionId: string;
 }
 
-export default function MotorItemForm({ }: Props) {
+export default function MotorItemForm({ sectionId, itemTypeId }: Props) {
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const router = useRouter();
     const { toast } = useToast();
@@ -36,10 +38,29 @@ export default function MotorItemForm({ }: Props) {
 
     async function onSubmit(data: FormData) {
         setIsLoading(true);
-        const apiResponse = await villageService.createVillage(
-            data.name,
-            "123"
-        );
+
+        const createMotorObj: MotorCreateType = {
+            sectionId: sectionId,
+            itemTypeId: itemTypeId,
+            name: data.name,
+            brand: data.brand,
+            serial_num: data.serial_num,
+            hp: data.hp,
+            amp: data.amp,
+            phase: data.phase,
+            capacitor: data.capacitor,
+            front_bearing: data.front_bearing,
+            back_bearing: data.back_bearing,
+            q: data.q,
+            h: data.h,
+            mechanical_seal: data.mechanical_seal,
+            o_ring: data.o_ring,
+            pump_type: data.pump_type,
+            details: data.details,
+            state: data.state,
+            notes: data.notes,
+        }
+        const apiResponse = await itemService.createMotorItem(createMotorObj);
         setIsLoading(false);
         if (!apiResponse.error) {
             router.refresh();
@@ -86,6 +107,19 @@ export default function MotorItemForm({ }: Props) {
                     />
                     <FormField
                         control={form.control}
+                        name="brand"
+                        render={({ field }) =>
+                            <FormItem>
+                                <FormLabel>Item Brand</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Brand" {...field} />
+                                </FormControl>
+                                <FormDescription />
+                                <FormMessage />
+                            </FormItem>}
+                    />
+                    <FormField
+                        control={form.control}
                         name="hp"
                         render={({ field }) =>
                             <FormItem>
@@ -123,6 +157,28 @@ export default function MotorItemForm({ }: Props) {
                                 <FormMessage />
                             </FormItem>}
                     />
+                    <FormField
+                        control={form.control}
+                        name="pump_type"
+                        render={({ field }) =>
+                            <FormItem>
+                                <FormLabel>Pump Type</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Pump Type" {...field} />
+                                </FormControl>
+                                <FormDescription />
+                                <FormMessage />
+                            </FormItem>}
+                    />
+
+
+
+
+
+
+
+
+
                     <FormField
                         control={form.control}
                         name="capacitor"
@@ -175,6 +231,61 @@ export default function MotorItemForm({ }: Props) {
                                 <FormMessage />
                             </FormItem>}
                     />
+
+
+
+
+
+                    <FormField
+                        control={form.control}
+                        name="h"
+                        render={({ field }) =>
+                            <FormItem>
+                                <FormLabel>H</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="H" {...field} />
+                                </FormControl>
+                                <FormDescription />
+                                <FormMessage />
+                            </FormItem>}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="mechanical_seal"
+                        render={({ field }) =>
+                            <FormItem>
+                                <FormLabel>Mechanical Seal</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Mechanical Seal" {...field} />
+                                </FormControl>
+                                <FormDescription />
+                                <FormMessage />
+                            </FormItem>}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="o_ring"
+                        render={({ field }) =>
+                            <FormItem>
+                                <FormLabel>O Ring</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="O Ring" {...field} />
+                                </FormControl>
+                                <FormDescription />
+                                <FormMessage />
+                            </FormItem>}
+                    />
+
+
+
+
+
+
+
+
+
+
+
                     <FormField
                         control={form.control}
                         name="state"

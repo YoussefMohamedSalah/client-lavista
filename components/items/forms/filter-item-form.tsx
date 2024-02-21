@@ -20,13 +20,16 @@ import {
     FormLabel,
     FormMessage
 } from "@/components/ui/form";
+import { FilterCreateType, itemService } from "@/services/item.service";
 
 type FormData = z.infer<typeof filterItemFormSchema>;
 
 interface Props {
+    itemTypeId: string;
+    sectionId: string;
 }
 
-export default function FilterItemForm({ }: Props) {
+export default function FilterItemForm({ sectionId, itemTypeId }: Props) {
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const router = useRouter();
     const { toast } = useToast();
@@ -36,10 +39,25 @@ export default function FilterItemForm({ }: Props) {
 
     async function onSubmit(data: FormData) {
         setIsLoading(true);
-        const apiResponse = await villageService.createVillage(
-            data.name,
-            "123"
-        );
+
+        const createFilterObj: FilterCreateType = {
+            sectionId: sectionId,
+            itemTypeId: itemTypeId,
+            name: data.name,
+            state: data.state,
+            filter_type: data.filter_type,
+            filter_diameter: data.filter_diameter,
+            filter_flow: data.filter_flow,
+            area: data.area,
+            sand: data.sand,
+            sand_size: data.sand_size,
+            max_pressure: data.max_pressure,
+            o_ring: data.o_ring,
+            details: data.details,
+            notes: data.notes,
+        }
+
+        const apiResponse = await itemService.createFilterItem(createFilterObj);
         setIsLoading(false);
         if (!apiResponse.error) {
             router.refresh();
@@ -71,58 +89,7 @@ export default function FilterItemForm({ }: Props) {
                                 <FormMessage />
                             </FormItem>}
                     />
-                    <FormField
-                        control={form.control}
-                        name="serial_num"
-                        render={({ field }) =>
-                            <FormItem>
-                                <FormLabel>Serial Number</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Serial Number" {...field} />
-                                </FormControl>
-                                <FormDescription />
-                                <FormMessage />
-                            </FormItem>}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="front_bearing"
-                        render={({ field }) =>
-                            <FormItem>
-                                <FormLabel>Front Bearing</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Front Bearing" {...field} />
-                                </FormControl>
-                                <FormDescription />
-                                <FormMessage />
-                            </FormItem>}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="back_bearing"
-                        render={({ field }) =>
-                            <FormItem>
-                                <FormLabel>Back Bearing</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Back Bearing" {...field} />
-                                </FormControl>
-                                <FormDescription />
-                                <FormMessage />
-                            </FormItem>}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="q"
-                        render={({ field }) =>
-                            <FormItem>
-                                <FormLabel>Q</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Q" {...field} />
-                                </FormControl>
-                                <FormDescription />
-                                <FormMessage />
-                            </FormItem>}
-                    />
+
                     <FormField
                         control={form.control}
                         name="filter_type"
@@ -162,19 +129,8 @@ export default function FilterItemForm({ }: Props) {
                                 <FormMessage />
                             </FormItem>}
                     />
-                    <FormField
-                        control={form.control}
-                        name="pump_type"
-                        render={({ field }) =>
-                            <FormItem>
-                                <FormLabel>Pump Type</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Pump Type" {...field} />
-                                </FormControl>
-                                <FormDescription />
-                                <FormMessage />
-                            </FormItem>}
-                    />
+
+
                     <FormField
                         control={form.control}
                         name="state"
@@ -183,6 +139,72 @@ export default function FilterItemForm({ }: Props) {
                                 <FormLabel>State</FormLabel>
                                 <FormControl>
                                     <Input placeholder="State" {...field} />
+                                </FormControl>
+                                <FormDescription />
+                                <FormMessage />
+                            </FormItem>}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="area"
+                        render={({ field }) =>
+                            <FormItem>
+                                <FormLabel>Area</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Area" {...field} />
+                                </FormControl>
+                                <FormDescription />
+                                <FormMessage />
+                            </FormItem>}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="sand"
+                        render={({ field }) =>
+                            <FormItem>
+                                <FormLabel>Sand Weight</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Sand Weight" {...field} />
+                                </FormControl>
+                                <FormDescription />
+                                <FormMessage />
+                            </FormItem>}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="sand_size"
+                        render={({ field }) =>
+                            <FormItem>
+                                <FormLabel>Sand Size</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Sand Size" {...field} />
+                                </FormControl>
+                                <FormDescription />
+                                <FormMessage />
+                            </FormItem>}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="max_pressure"
+                        render={({ field }) =>
+                            <FormItem>
+                                <FormLabel>Max Pressure</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Max Pressure" {...field} />
+                                </FormControl>
+                                <FormDescription />
+                                <FormMessage />
+                            </FormItem>}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="o_ring"
+                        render={({ field }) =>
+                            <FormItem>
+                                <FormLabel>O Ring</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="O Ring" {...field} />
                                 </FormControl>
                                 <FormDescription />
                                 <FormMessage />

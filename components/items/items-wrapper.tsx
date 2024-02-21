@@ -27,13 +27,14 @@ const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemType
     const [itemsToShow, setItemsToShow] = useState<any[]>([...items]);
     const [selectedSection, setSelectedSection] = useState<string>("0");
     const [selectedItemTypeId, setSelectedItemTypeId] = useState<string>("");
-    const [selectedItemTypeName, setSelectedItemTypeName] = useState<string>("");
+    const [selectedItemType, setSelectedItemType] = useState<string>("");
 
+    console.log({ selectedSection })
 
     useEffect(() => {
         if (selectedItemTypeId) {
             let selectedItemType = itemTypes.find((itemType) => itemType.id === selectedItemTypeId)
-            if (selectedItemType) setSelectedItemTypeName(selectedItemType.name!)
+            if (selectedItemType) setSelectedItemType(selectedItemType)
             handleGetItemsByItemType();
         }
     }, [selectedItemTypeId, selectedSection]);
@@ -97,7 +98,7 @@ const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemType
                 <CreateSectionForm villageId={villageId} />
             </ItemsFilters>
             {/* TABLES */}
-            {selectedItemTypeName && (<ItemsTable items={itemsToShow} selectedItemTypeName={selectedItemTypeName} itemTypes={itemTypes} />)}
+            {selectedItemType && (<ItemsTable items={itemsToShow} selectedItemType={selectedItemType} itemTypes={itemTypes} selectedSectionId={selectedSection} />)}
         </>
     )
 }

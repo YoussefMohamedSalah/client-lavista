@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import MotorItemForm from './forms/motor-item-form';
 import FilterItemForm from './forms/filter-item-form';
 import ElcItemForm from './forms/elc-item-form';
@@ -8,11 +8,17 @@ import { Button } from '../ui/button';
 
 interface Props {
     itemTypes: any[];
+    defaultItemType: any;
+    selectedSectionId: string;
 }
 
-const ItemsFormModal = ({ itemTypes }: Props) => {
+const ItemsFormModal = ({ itemTypes, defaultItemType, selectedSectionId }: Props) => {
     const [isModal, setIsModal] = useState<boolean>(false);
-    const [selectedItemType, setSelectedItemType] = useState<any>("");
+    const [selectedItemType, setSelectedItemType] = useState<any>({});
+
+    useEffect(() => {
+        setSelectedItemType(defaultItemType)
+    }, [defaultItemType])
 
     return (
         <>
@@ -23,16 +29,16 @@ const ItemsFormModal = ({ itemTypes }: Props) => {
                         {itemTypes.map((type) => {
                             return (
                                 <div key={type.id}>
-                                    <Button onClick={() => setSelectedItemType(type.name)}> {type.name}</Button>
+                                    <Button onClick={() => setSelectedItemType(type)}> {type.name}</Button>
                                 </div>
                             )
                         })}
                     </div>
                     {selectedItemType ? (<>
-                        {selectedItemType === "Motor" && <MotorItemForm />}
-                        {selectedItemType === "Filter" && <FilterItemForm />}
-                        {selectedItemType === "Elec Panel" && <ElcItemForm />}
-                        {selectedItemType === "Pool" && <PoolItemForm />}
+                        {selectedItemType?.name! === "Motor" && <MotorItemForm itemTypeId={selectedItemType?.id!} sectionId={selectedSectionId} />}
+                        {selectedItemType?.name! === "Filter" && <FilterItemForm itemTypeId={selectedItemType?.id!} sectionId={selectedSectionId} />}
+                        {selectedItemType?.name! === "Elec Panel" && <ElcItemForm itemTypeId={selectedItemType?.id!} sectionId={selectedSectionId} />}
+                        {selectedItemType?.name! === "Pool" && <PoolItemForm itemTypeId={selectedItemType?.id!} sectionId={selectedSectionId} />}
                     </>) : <p className="self-center text-2xl">Please Select Item Type!</p>}
 
                     <div className="modal-action">

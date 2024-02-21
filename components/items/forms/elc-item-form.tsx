@@ -20,13 +20,16 @@ import {
     FormLabel,
     FormMessage
 } from "@/components/ui/form";
+import { ElecCreateType, itemService } from "@/services/item.service";
 
 type FormData = z.infer<typeof elecItemFormSchema>;
 
 interface Props {
+    itemTypeId: string;
+    sectionId: string;
 }
 
-export default function ElcItemForm({ }: Props) {
+export default function ElcItemForm({ sectionId, itemTypeId }: Props) {
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const router = useRouter();
     const { toast } = useToast();
@@ -34,12 +37,22 @@ export default function ElcItemForm({ }: Props) {
         resolver: zodResolver(elecItemFormSchema)
     });
 
+    console.log(itemTypeId)
+
     async function onSubmit(data: FormData) {
         setIsLoading(true);
-        const apiResponse = await villageService.createVillage(
-            data.name,
-            "123"
-        );
+        const createElecObj: ElecCreateType = {
+            sectionId: sectionId,
+            itemTypeId: itemTypeId,
+            name: data.name,
+            brand: data.brand,
+            count: data.count,
+            details: data.details,
+            state: data.state,
+            notes: data.notes,
+        }
+
+        const apiResponse = await itemService.createElecItem(createElecObj);
         setIsLoading(false);
         if (!apiResponse.error) {
             router.refresh();
@@ -73,95 +86,33 @@ export default function ElcItemForm({ }: Props) {
                     />
                     <FormField
                         control={form.control}
-                        name="serial_num"
+                        name="brand"
                         render={({ field }) =>
                             <FormItem>
-                                <FormLabel>Serial Number</FormLabel>
+                                <FormLabel>Brand</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Serial Number" {...field} />
+                                    <Input placeholder="Brand" {...field} />
                                 </FormControl>
                                 <FormDescription />
                                 <FormMessage />
                             </FormItem>}
                     />
+
+
                     <FormField
                         control={form.control}
-                        name="amp"
+                        name="count"
                         render={({ field }) =>
                             <FormItem>
-                                <FormLabel>AMP</FormLabel>
+                                <FormLabel>Item Count</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="AMP" {...field} />
+                                    <Input placeholder="Count" {...field} />
                                 </FormControl>
                                 <FormDescription />
                                 <FormMessage />
                             </FormItem>}
                     />
-                    <FormField
-                        control={form.control}
-                        name="phase"
-                        render={({ field }) =>
-                            <FormItem>
-                                <FormLabel>Phase</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Phase" {...field} />
-                                </FormControl>
-                                <FormDescription />
-                                <FormMessage />
-                            </FormItem>}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="capacitor"
-                        render={({ field }) =>
-                            <FormItem>
-                                <FormLabel>Capacitor</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Capacitor" {...field} />
-                                </FormControl>
-                                <FormDescription />
-                                <FormMessage />
-                            </FormItem>}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="front_bearing"
-                        render={({ field }) =>
-                            <FormItem>
-                                <FormLabel>Front Bearing</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Front Bearing" {...field} />
-                                </FormControl>
-                                <FormDescription />
-                                <FormMessage />
-                            </FormItem>}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="back_bearing"
-                        render={({ field }) =>
-                            <FormItem>
-                                <FormLabel>Back Bearing</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Back Bearing" {...field} />
-                                </FormControl>
-                                <FormDescription />
-                                <FormMessage />
-                            </FormItem>}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="q"
-                        render={({ field }) =>
-                            <FormItem>
-                                <FormLabel>Q</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Q" {...field} />
-                                </FormControl>
-                                <FormDescription />
-                                <FormMessage />
-                            </FormItem>}
-                    />
+
                     <FormField
                         control={form.control}
                         name="state"

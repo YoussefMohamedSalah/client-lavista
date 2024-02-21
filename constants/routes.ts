@@ -56,5 +56,5 @@ export const ALL_ITEMS_TYPE_ENDPOINT = "/lavista/item_types/";
 export const LOCATIONS_ENDPOINT = "/location/";
 export const VILLAGES_ENDPOINT = "/village/";
 export const SECTIONS_ENDPOINT = "/section/";
-export const ITEMS_ENDPOINT = "/section/";
+export const ITEMS_ENDPOINT = "/item/";
 
