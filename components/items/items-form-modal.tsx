@@ -18,7 +18,7 @@ const ItemsFormModal = ({ itemTypes }: Props) => {
         <>
             <button style={{ textAlign: "center", width: "100%" }} onClick={() => setIsModal(true)}>+ Add Item</button>
             <dialog id="my_modal_1" className="modal" open={isModal} onClose={() => setIsModal(false)}>
-                <div className="modal-box lg:min-w-[800px] min-h-[60vh]">
+                <div className="modal-box flex flex-col justify-between lg:min-w-[800px] min-h-[60vh]">
                     <div className="flex align-center justify-center w-full gap-2 w-[100%] pb-4">
                         {itemTypes.map((type) => {
                             return (
@@ -28,10 +28,13 @@ const ItemsFormModal = ({ itemTypes }: Props) => {
                             )
                         })}
                     </div>
-                    {selectedItemType === "Motor" && <MotorItemForm />}
-                    {selectedItemType === "Filter" && <FilterItemForm />}
-                    {selectedItemType === "Elec Panel" && <ElcItemForm />}
-                    {selectedItemType === "Pool" && <PoolItemForm />}
+                    {selectedItemType ? (<>
+                        {selectedItemType === "Motor" && <MotorItemForm />}
+                        {selectedItemType === "Filter" && <FilterItemForm />}
+                        {selectedItemType === "Elec Panel" && <ElcItemForm />}
+                        {selectedItemType === "Pool" && <PoolItemForm />}
+                    </>) : <p className="self-center text-2xl">Please Select Item Type!</p>}
+
                     <div className="modal-action">
                         <button className="btn" onClick={() => setIsModal(false)}>Close</button>
                     </div>
