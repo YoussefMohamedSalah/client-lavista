@@ -191,7 +191,7 @@ export default function FilterItemForm({ }: Props) {
                 </div>
                 <FormField
                     control={form.control}
-                    name="name"
+                    name="details"
                     render={({ field }) =>
                         <FormItem>
                             <FormLabel>Details</FormLabel>
@@ -204,7 +204,7 @@ export default function FilterItemForm({ }: Props) {
                 />
                 <FormField
                     control={form.control}
-                    name="details"
+                    name="notes"
                     render={({ field }) =>
                         <FormItem>
                             <FormLabel>Notes</FormLabel>

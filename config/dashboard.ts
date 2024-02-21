@@ -13,36 +13,36 @@ export const dashboardConfig: DashboardConfig = {
       name: "Admin - Main",
       items: [
         {
-          title: "Locations",
-          href: "/admin/locations",
-          icon: "users",
-        },
-        {
-          title: "Villages",
-          href: "/admin/villages",
-          icon: "users",
-        },
-        {
           title: "Dashboard",
           href: "/admin/dashboard",
           icon: "dashboard",
         },
         {
-          title: "Users",
-          href: "/admin/users",
-          icon: "users",
-        },
-      ],
-    },
-    {
-      name: "CMS - Sections",
-      items: [
-        {
-          title: "Brands",
-          href: "/admin/brands",
+          title: "Locations",
+          href: "/admin/locations",
           icon: "brand",
         },
+        {
+          title: "Villages",
+          href: "/admin/villages",
+          icon: "warning",
+        },
+        {
+          title: "Items",
+          href: "/admin/items",
+          icon: "product",
+        },
       ],
     },
+    // {
+    //   name: "CMS - Sections",
+    //   items: [
+    //     {
+    //       title: "Brands",
+    //       href: "/admin/brands",
+    //       icon: "brand",
+    //     },
+    //   ],
+    // },
   ],
 };

@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import { ItemsFilters } from './items-filters';
 import CreateSectionForm from '../sections/create-section-form';
-import ItemsTable from './items-table';
+import ItemsTable from './tables/items-table';
 import {
     Select,
     SelectContent,
@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/select"
 import { BASE_API_URL } from '@/constants/constants';
 import { SECTIONS_ENDPOINT } from '@/constants/routes';
-import ItemsFormModal from './items-form-modal';
 
 interface Props {
     villageName: string;
@@ -27,16 +26,20 @@ interface Props {
 const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemTypes }: Props) => {
     const [itemsToShow, setItemsToShow] = useState<any[]>([...items]);
     const [selectedSection, setSelectedSection] = useState<string>("0");
-    const [selectedItemType, setSelectedItemType] = useState<string>("");
+    const [selectedItemTypeId, setSelectedItemTypeId] = useState<string>("");
+    const [selectedItemTypeName, setSelectedItemTypeName] = useState<string>("");
+
 
     useEffect(() => {
-        if (selectedItemType) {
+        if (selectedItemTypeId) {
+            let selectedItemType = itemTypes.find((itemType) => itemType.id === selectedItemTypeId)
+            if (selectedItemType) setSelectedItemTypeName(selectedItemType.name!)
             handleGetItemsByItemType();
         }
-    }, [selectedItemType]);
+    }, [selectedItemTypeId, selectedSection]);
 
     const handleGetItemsByItemType = async () => {
-        const itemsResponse = await fetch(`${BASE_API_URL}${SECTIONS_ENDPOINT}items/${selectedSection}/type/${selectedItemType}`, {
+        const itemsResponse = await fetch(`${BASE_API_URL}${SECTIONS_ENDPOINT}items/${selectedSection}/type/${selectedItemTypeId}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -74,13 +77,13 @@ const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemType
                 <div className="flex items-center space-x-2">
                     <p className="whitespace-nowrap text-sm font-medium">Item Type</p>
                     <Select
-                        value={`${selectedItemType || "All"}`}
+                        value={`${selectedItemTypeId || "All"}`}
                         onValueChange={(value) => {
-                            setSelectedItemType(value)
+                            setSelectedItemTypeId(value)
                         }}
                     >
                         <SelectTrigger className="h-8 w-[130px]">
-                            <SelectValue placeholder={`${selectedItemType}`} />
+                            <SelectValue placeholder={`${selectedItemTypeId}`} />
                         </SelectTrigger>
                         <SelectContent side="bottom">
                             {itemTypes.map((type) => (
@@ -93,10 +96,8 @@ const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemType
                 </div>
                 <CreateSectionForm villageId={villageId} />
             </ItemsFilters>
-            {selectedItemType && (
-                <ItemsTable items={itemsToShow} />
-            )}
-            <ItemsFormModal itemTypes={itemTypes} />
+            {/* TABLES */}
+            {selectedItemTypeName && (<ItemsTable items={itemsToShow} selectedItemTypeName={selectedItemTypeName} itemTypes={itemTypes} />)}
         </>
     )
 }
