@@ -15,7 +15,7 @@ export default async function VillagesCards({ villages }: Props) {
         <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-3 pt-2 auto-rows-max">
             {villages && villages?.length > 0 ? (
                 <>
-                    {[...villages, ...villages, ...villages, ...villages, ...villages]?.map((village: any) => (
+                    {villages?.map((village: any) => (
                         <Link href={`/admin/villages/${village?.id}`} key={village?.id!}>
                             <Card>
                                 <CardHeader>
