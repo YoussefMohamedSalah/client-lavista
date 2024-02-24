@@ -238,7 +238,7 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <div className="w-full space-y-4 overflow-auto">
+    <div className="w-full space-y-2 overflow-auto">
       <DataTableToolbar
         table={table}
         filterableColumns={filterableColumns}
@@ -255,9 +255,9 @@ export function DataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   )
                 })}

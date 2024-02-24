@@ -6,7 +6,7 @@ import DashboardCards from "@/components/dashboard/dashboard-cards";
 
 export const metadata: Metadata = {
     title: "Dashboard",
-    description: "Lavista Dashboard"
+    description: "La vista Dashboard"
 };
 
 export default async function DashboardPage() {

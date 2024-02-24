@@ -44,9 +44,8 @@ export default function PoolItemForm({ sectionId, itemTypeId }: Props) {
             sectionId: sectionId,
             itemTypeId: itemTypeId,
             name: data.name,
-            count: data.count,
-            details: data.details,
             state: data.state,
+            details: data.details,
             notes: data.notes,
         }
 
@@ -76,20 +75,7 @@ export default function PoolItemForm({ sectionId, itemTypeId }: Props) {
                             <FormItem>
                                 <FormLabel>Name</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Item name" {...field} />
-                                </FormControl>
-                                <FormDescription />
-                                <FormMessage />
-                            </FormItem>}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="count"
-                        render={({ field }) =>
-                            <FormItem>
-                                <FormLabel>Item Count</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Item Count" {...field} />
+                                    <Input placeholder="Name" {...field} />
                                 </FormControl>
                                 <FormDescription />
                                 <FormMessage />
@@ -102,7 +88,7 @@ export default function PoolItemForm({ sectionId, itemTypeId }: Props) {
                             <FormItem>
                                 <FormLabel>State</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Item State" {...field} />
+                                    <Input placeholder="State" {...field} />
                                 </FormControl>
                                 <FormDescription />
                                 <FormMessage />
@@ -116,7 +102,7 @@ export default function PoolItemForm({ sectionId, itemTypeId }: Props) {
                         <FormItem>
                             <FormLabel>Details</FormLabel>
                             <FormControl>
-                                <Input placeholder="Item Details" {...field} />
+                                <Input placeholder="Details" {...field} />
                             </FormControl>
                             <FormDescription />
                             <FormMessage />

@@ -43,7 +43,6 @@ export default function MotorItemForm({ sectionId, itemTypeId }: Props) {
             sectionId: sectionId,
             itemTypeId: itemTypeId,
             name: data.name,
-            brand: data.brand,
             serial_num: data.serial_num,
             hp: data.hp,
             amp: data.amp,
@@ -86,7 +85,7 @@ export default function MotorItemForm({ sectionId, itemTypeId }: Props) {
                             <FormItem>
                                 <FormLabel>Name</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Item name" {...field} />
+                                    <Input placeholder="Name" {...field} />
                                 </FormControl>
                                 <FormDescription />
                                 <FormMessage />
@@ -107,12 +106,12 @@ export default function MotorItemForm({ sectionId, itemTypeId }: Props) {
                     />
                     <FormField
                         control={form.control}
-                        name="brand"
+                        name="pump_type"
                         render={({ field }) =>
                             <FormItem>
-                                <FormLabel>Item Brand</FormLabel>
+                                <FormLabel>Pump Type</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Brand" {...field} />
+                                    <Input placeholder="Pump Type" {...field} />
                                 </FormControl>
                                 <FormDescription />
                                 <FormMessage />
@@ -157,27 +156,6 @@ export default function MotorItemForm({ sectionId, itemTypeId }: Props) {
                                 <FormMessage />
                             </FormItem>}
                     />
-                    <FormField
-                        control={form.control}
-                        name="pump_type"
-                        render={({ field }) =>
-                            <FormItem>
-                                <FormLabel>Pump Type</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Pump Type" {...field} />
-                                </FormControl>
-                                <FormDescription />
-                                <FormMessage />
-                            </FormItem>}
-                    />
-
-
-
-
-
-
-
-
 
                     <FormField
                         control={form.control}
@@ -231,11 +209,6 @@ export default function MotorItemForm({ sectionId, itemTypeId }: Props) {
                                 <FormMessage />
                             </FormItem>}
                     />
-
-
-
-
-
                     <FormField
                         control={form.control}
                         name="h"
@@ -275,17 +248,6 @@ export default function MotorItemForm({ sectionId, itemTypeId }: Props) {
                                 <FormMessage />
                             </FormItem>}
                     />
-
-
-
-
-
-
-
-
-
-
-
                     <FormField
                         control={form.control}
                         name="state"
@@ -307,7 +269,7 @@ export default function MotorItemForm({ sectionId, itemTypeId }: Props) {
                         <FormItem>
                             <FormLabel>Details</FormLabel>
                             <FormControl>
-                                <Input placeholder="Item Details" {...field} />
+                                <Input placeholder="Details" {...field} />
                             </FormControl>
                             <FormDescription />
                             <FormMessage />
@@ -320,7 +282,7 @@ export default function MotorItemForm({ sectionId, itemTypeId }: Props) {
                         <FormItem>
                             <FormLabel>Notes</FormLabel>
                             <FormControl>
-                                <Input placeholder="Item Notes" {...field} />
+                                <Input placeholder="Notes" {...field} />
                             </FormControl>
                             <FormDescription />
                             <FormMessage />

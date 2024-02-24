@@ -15,7 +15,6 @@ export interface MotorCreateType {
     sectionId: string,
     itemTypeId: string,
     name: string,
-    brand: string,
     serial_num: string;
     hp: string,
     amp: string,
@@ -54,7 +53,6 @@ export interface PoolCreateType {
     sectionId: string,
     itemTypeId: string,
     name: string,
-    count: string,
     details: string,
     state: string,
     notes: string,
@@ -64,8 +62,6 @@ export interface ElecCreateType {
     sectionId: string,
     itemTypeId: string,
     name: string,
-    brand: string,
-    count: string,
     details: string,
     state: string,
     notes: string,
@@ -77,7 +73,6 @@ async function createMotorItem({
     itemTypeId,
     sectionId,
     name,
-    brand,
     hp,
     amp,
     phase,
@@ -96,7 +91,6 @@ async function createMotorItem({
     return await fetchWrapper.post(`${ITEM_URL}${sectionId}`, {
         itemTypeId,
         name,
-        brand,
         hp,
         amp,
         phase,
@@ -151,7 +145,7 @@ async function createPoolItem({
     itemTypeId,
     sectionId,
     name,
-    count,
+
     details,
     state,
     notes,
@@ -160,7 +154,7 @@ async function createPoolItem({
         itemTypeId,
         sectionId,
         name,
-        count,
+
         details,
         state,
         notes,
@@ -171,8 +165,7 @@ async function createElecItem({
     sectionId,
     itemTypeId,
     name,
-    brand,
-    count,
+
     details,
     state,
     notes,
@@ -180,8 +173,7 @@ async function createElecItem({
     return await fetchWrapper.post(`${ITEM_URL}${sectionId}`, {
         itemTypeId,
         name,
-        brand,
-        count,
+
         details,
         state,
         notes,
@@ -194,7 +186,6 @@ async function editItem(
     id: string,
     name: string,
     brand: string,
-    count: string,
     hp: string,
     amp: string,
     phase: string,
@@ -212,8 +203,6 @@ async function editItem(
 ) {
     return await fetchWrapper.put(`${ITEM_URL}${id}`, {
         name,
-        brand,
-        count,
         hp,
         amp,
         phase,

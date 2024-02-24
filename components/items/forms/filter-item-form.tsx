@@ -83,7 +83,7 @@ export default function FilterItemForm({ sectionId, itemTypeId }: Props) {
                             <FormItem>
                                 <FormLabel>Name</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Item name" {...field} />
+                                    <Input placeholder="Name" {...field} />
                                 </FormControl>
                                 <FormDescription />
                                 <FormMessage />
@@ -218,7 +218,7 @@ export default function FilterItemForm({ sectionId, itemTypeId }: Props) {
                         <FormItem>
                             <FormLabel>Details</FormLabel>
                             <FormControl>
-                                <Input placeholder="Item Details" {...field} />
+                                <Input placeholder="Details" {...field} />
                             </FormControl>
                             <FormDescription />
                             <FormMessage />
@@ -231,7 +231,7 @@ export default function FilterItemForm({ sectionId, itemTypeId }: Props) {
                         <FormItem>
                             <FormLabel>Notes</FormLabel>
                             <FormControl>
-                                <Input placeholder="Item Notes" {...field} />
+                                <Input placeholder="Notes" {...field} />
                             </FormControl>
                             <FormDescription />
                             <FormMessage />

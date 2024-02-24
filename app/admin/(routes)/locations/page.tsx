@@ -7,13 +7,13 @@ import CreateLocationForm from "@/components/locations/create-location-form";
 
 export const metadata: Metadata = {
 	title: "Locations",
-	description: "Lavista Locations"
+	description: "La vista Locations"
 };
 
 export default async function LocationsPage() {
 	return (
 		<div>
-			<PageHeader heading="Locations" text="Lavista Locations">
+			<PageHeader heading="Locations" text="La vista Locations">
 				<CreateLocationForm />
 			</PageHeader>
 			<Suspense fallback={<CardsLoadingSkeleton />}>

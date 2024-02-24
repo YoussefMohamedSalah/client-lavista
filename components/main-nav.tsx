@@ -23,7 +23,7 @@ export function MainNav({ items, children }: MainNavProps) {
       <Link href="/admin/dashboard" className="hidden items-center space-x-2 md:flex">
         <Icons.logo />
         <span className="hidden font-bold sm:inline-block">
-          Lavista
+          La vista
         </span>
       </Link>
       {items?.length ? (

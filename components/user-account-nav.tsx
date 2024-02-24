@@ -18,7 +18,7 @@ export function UserAccountNav() {
       <DropdownMenuTrigger>
         <Avatar className="h-8 w-8">
           <AvatarImage
-            src={session?.user.image ?? "/profile_picture_placeholder.png"}
+            src={session?.user.image ?? "/avatar_image.jpg"}
           />
           <AvatarFallback>AN</AvatarFallback>
         </Avatar>

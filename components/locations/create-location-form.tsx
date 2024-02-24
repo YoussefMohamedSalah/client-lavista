@@ -50,8 +50,7 @@ export default function CreateLocationForm() {
             <form
                 noValidate
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="px-2 py-8 flex w-full gap-3 space-y-6 sm:w-[350px]"
-                style={{ alignItems: "center" }}
+                className="px-2 py-2 items-center flex w-full gap-3 space-y-6 sm:w-[350px]"
             >
                 <FormField
                     control={form.control}

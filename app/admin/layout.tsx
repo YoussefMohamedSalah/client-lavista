@@ -14,7 +14,7 @@ export default async function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <div>
       <NextTopLoader color="#0095D8" showSpinner={false} />
-      <div className="flex min-h-screen flex-col space-y-6">
+      <div className="flex min-h-screen flex-col space-y-3">
         <header className="sticky top-0 z-40 border-b bg-background">
           <div className="flex h-16 py-4 xl:px-20"> {/* Modified class */}
             <MainNav items={dashboardConfig.mainNav} />

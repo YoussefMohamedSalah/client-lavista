@@ -28,7 +28,7 @@ export function DataTableToolbar<TData>({
   return (
     <div className="flex items-center justify-between p-1">
       <div className="flex flex-1 items-center space-x-2">
-        {searchableColumns.length > 0 &&
+        {/* {searchableColumns.length > 0 &&
           searchableColumns.map(
             (column) =>
               table.getColumn(column.id ? String(column.id) : "") && (
@@ -48,8 +48,8 @@ export function DataTableToolbar<TData>({
                   className="h-8 w-[150px] lg:w-[250px]"
                 />
               )
-          )}
-        {filterableColumns.length > 0 &&
+          )} */}
+        {/* {filterableColumns.length > 0 &&
           filterableColumns.map(
             (column) =>
               table.getColumn(column.id ? String(column.id) : "") && (
@@ -60,8 +60,8 @@ export function DataTableToolbar<TData>({
                   options={column.options}
                 />
               )
-          )}
-        {isFiltered && (
+          )} */}
+        {/* {isFiltered && (
           <Button
             variant="ghost"
             onClick={() => table.resetColumnFilters()}
@@ -70,7 +70,7 @@ export function DataTableToolbar<TData>({
             Reset
             <Cross2Icon className="ml-2 h-4 w-4" />
           </Button>
-        )}
+        )} */}
       </div>
       <DataTableViewOptions table={table} />
     </div>

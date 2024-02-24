@@ -37,16 +37,12 @@ export default function ElcItemForm({ sectionId, itemTypeId }: Props) {
         resolver: zodResolver(elecItemFormSchema)
     });
 
-    console.log(itemTypeId)
-
     async function onSubmit(data: FormData) {
         setIsLoading(true);
         const createElecObj: ElecCreateType = {
             sectionId: sectionId,
             itemTypeId: itemTypeId,
             name: data.name,
-            brand: data.brand,
-            count: data.count,
             details: data.details,
             state: data.state,
             notes: data.notes,
@@ -78,41 +74,12 @@ export default function ElcItemForm({ sectionId, itemTypeId }: Props) {
                             <FormItem>
                                 <FormLabel>Name</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Item name" {...field} />
+                                    <Input placeholder="Name" {...field} />
                                 </FormControl>
                                 <FormDescription />
                                 <FormMessage />
                             </FormItem>}
                     />
-                    <FormField
-                        control={form.control}
-                        name="brand"
-                        render={({ field }) =>
-                            <FormItem>
-                                <FormLabel>Brand</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Brand" {...field} />
-                                </FormControl>
-                                <FormDescription />
-                                <FormMessage />
-                            </FormItem>}
-                    />
-
-
-                    <FormField
-                        control={form.control}
-                        name="count"
-                        render={({ field }) =>
-                            <FormItem>
-                                <FormLabel>Item Count</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Count" {...field} />
-                                </FormControl>
-                                <FormDescription />
-                                <FormMessage />
-                            </FormItem>}
-                    />
-
                     <FormField
                         control={form.control}
                         name="state"
@@ -134,7 +101,7 @@ export default function ElcItemForm({ sectionId, itemTypeId }: Props) {
                         <FormItem>
                             <FormLabel>Details</FormLabel>
                             <FormControl>
-                                <Input placeholder="Item Details" {...field} />
+                                <Input placeholder="Details" {...field} />
                             </FormControl>
                             <FormDescription />
                             <FormMessage />
@@ -147,7 +114,7 @@ export default function ElcItemForm({ sectionId, itemTypeId }: Props) {
                         <FormItem>
                             <FormLabel>Notes</FormLabel>
                             <FormControl>
-                                <Input placeholder="Item Notes" {...field} />
+                                <Input placeholder="Notes" {...field} />
                             </FormControl>
                             <FormDescription />
                             <FormMessage />

@@ -10,7 +10,7 @@ import VillagesCards from "@/components/villages/villages-cards";
 
 export const metadata: Metadata = {
 	title: "Villages",
-	description: "Lavista Villages"
+	description: "La vista Villages"
 };
 
 export default async function LocationsPage() {
@@ -28,7 +28,7 @@ export default async function LocationsPage() {
 
 	return (
 		<div>
-			<PageHeader heading="Villages" text="Lavista Villages" btnText="Add Village" btnHref="/admin/villages/create/" />
+			<PageHeader heading="Villages" text="La vista Villages" btnText="Add Village" btnHref="/admin/villages/create/" />
 			<Suspense fallback={<CardsLoadingSkeleton />}>
 				<VillagesCards villages={villages} />
 			</Suspense>

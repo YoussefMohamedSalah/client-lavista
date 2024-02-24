@@ -20,9 +20,18 @@ const ItemsFormModal = ({ itemTypes, defaultItemType, selectedSectionId }: Props
         setSelectedItemType(defaultItemType)
     }, [defaultItemType])
 
+    const handleModelClose = () => {
+        setIsModal(false);
+        if (typeof window !== "undefined") {
+            window.location.reload();
+        }
+    }
+
     return (
         <>
-            <button style={{ textAlign: "center", width: "100%" }} onClick={() => setIsModal(true)}>+ Add Item</button>
+            <div className="flex w-full align-center justify-center">
+                <Button onClick={() => setIsModal(true)}>+ Add Item</Button>
+            </div>
             <dialog id="my_modal_1" className="modal" open={isModal} onClose={() => setIsModal(false)}>
                 <div className="modal-box flex flex-col justify-between lg:min-w-[800px] min-h-[60vh]">
                     <div className="flex align-center justify-center w-full gap-2 w-[100%] pb-4">
@@ -42,7 +51,7 @@ const ItemsFormModal = ({ itemTypes, defaultItemType, selectedSectionId }: Props
                     </>) : <p className="self-center text-2xl">Please Select Item Type!</p>}
 
                     <div className="modal-action">
-                        <button className="btn" onClick={() => setIsModal(false)}>Close</button>
+                        <button className="btn bg-destructive text-white" onClick={handleModelClose}>Close</button>
                     </div>
                 </div>
             </dialog>
