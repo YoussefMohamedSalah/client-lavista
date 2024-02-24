@@ -53,7 +53,7 @@ export function DataTable<TData, TValue>({
 
   // Search params
   const page = searchParams?.get("page") ?? "1"
-  const per_page = searchParams?.get("per_page") ?? "10"
+  const per_page = searchParams?.get("per_page") ?? "1000"
   const sort = searchParams?.get("sort")
   const [column, order] = sort?.split(".") ?? []
 
