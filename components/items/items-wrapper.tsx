@@ -107,7 +107,7 @@ const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemType
             </div>
 
             {/* TABLES */}
-            {selectedItemType && (<ItemsTable items={itemsToShow} selectedItemType={selectedItemType} itemTypes={itemTypes} selectedSectionId={selectedSection} />)}
+            {selectedItemTypeId && (<ItemsTable items={[...itemsToShow]} selectedItemType={selectedItemType} itemTypes={itemTypes} selectedSectionId={selectedSection} />)}
         </>
     )
 }
