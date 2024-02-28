@@ -2,13 +2,14 @@
 
 import { DataTable } from "@/components/ui/data-table/data-table";
 import { DataTableColumnHeader } from "@/components/ui/data-table/data-table-column-header";
-import { Item } from "@/types/item";
+import { Item, PoolType } from "@/types/item";
 import { type ColumnDef } from "@tanstack/react-table";
 import * as React from "react";
 import ItemsFormModal from "../items-form-modal";
+import { Input } from "@/components/ui/input";
 
 interface UsersTableShellProps {
-    data: Item[];
+    data: PoolType[];
     pageCount: number;
     itemTypes: any[];
     selectedItemType: any;
@@ -16,6 +17,24 @@ interface UsersTableShellProps {
 }
 
 export function PoolsItemsTableShell({ data, pageCount, itemTypes, selectedItemType, selectedSectionId }: UsersTableShellProps) {
+    const [filteredData, setFilteredData] = React.useState<any[]>(data);
+    const [filteredValue, setFilteredValue] = React.useState<string>("");
+
+    React.useEffect(() => {
+        handleFilterItems(filteredValue)
+    }, [filteredValue])
+
+    const handleFilterItems = (value: string) => {
+        const filtered = data.filter((item) => {
+            // Customize this condition based on your filtering requirements
+            return (
+                item.name?.toString()?.toLowerCase().includes(value?.toString()?.toLowerCase()) ||
+                item.state?.toString()?.toLowerCase().includes(value?.toString()?.toLowerCase()) ||
+                item.details?.toString()?.toLowerCase().includes(value?.toString()?.toLowerCase())
+            );
+        });
+        setFilteredData(filtered);
+    };
 
     // Memoize the columns so they don't re-render on every render
     const columns = React.useMemo<ColumnDef<Item, unknown>[]>(
@@ -129,9 +148,15 @@ export function PoolsItemsTableShell({ data, pageCount, itemTypes, selectedItemT
     return (
         <>
             <ItemsFormModal itemTypes={itemTypes} defaultItemType={selectedItemType} selectedSectionId={selectedSectionId} />
+            <Input
+                placeholder={`Search...`}
+                value={filteredValue}
+                onChange={(event) => setFilteredValue(event?.target?.value)}
+                className="h-8 w-[150px] lg:w-[250px]"
+            />
             <DataTable
                 columns={columns}
-                data={data}
+                data={filteredData ? filteredData : data}
                 pageCount={pageCount}
                 filterableColumns={[
                     {

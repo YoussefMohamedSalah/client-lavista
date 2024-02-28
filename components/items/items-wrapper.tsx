@@ -118,7 +118,6 @@ const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemType
 					</Button>
 				</div>
 			</div>
-
 			{/* TABLES */}
 			<ItemsTable items={itemsToShow} selectedItemType={selectedItemType} itemTypes={itemTypes} selectedSectionId={selectedSection} />
 		</>

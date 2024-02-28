@@ -19,7 +19,7 @@ interface UsersTableShellProps {
 
 export function FiltersItemsTableShell({ data, pageCount, itemTypes, selectedItemType, selectedSectionId }: UsersTableShellProps) {
 
-    const [filteredData, setFilteredData] = React.useState<any[]>([...data]);
+    const [filteredData, setFilteredData] = React.useState<any[]>(data);
     const [filteredValue, setFilteredValue] = React.useState<string>("");
 
     React.useEffect(() => {
