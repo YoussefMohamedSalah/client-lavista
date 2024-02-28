@@ -41,9 +41,11 @@ const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemType
 	}, [initialized]);
 
 	useEffect(() => {
-		let selectedItemType = itemTypes.find((itemType) => itemType.id === selectedItemTypeId)
-		if (selectedItemType) setSelectedItemType(selectedItemType)
-		handleGetItemsByItemType();
+		if (initialized) {
+			let selectedItemType = itemTypes.find((itemType) => itemType.id === selectedItemTypeId)
+			if (selectedItemType) setSelectedItemType(selectedItemType)
+			handleGetItemsByItemType();
+		}
 	}, [selectedItemTypeId, selectedSection]);
 
 	const handleGetItemsByItemType = async () => {
@@ -118,7 +120,7 @@ const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemType
 			</div>
 
 			{/* TABLES */}
-			{selectedItemTypeId && (<ItemsTable items={[...itemsToShow]} selectedItemType={selectedItemType} itemTypes={itemTypes} selectedSectionId={selectedSection} />)}
+			<ItemsTable items={itemsToShow} selectedItemType={selectedItemType} itemTypes={itemTypes} selectedSectionId={selectedSection} />
 		</>
 	)
 }
