@@ -39,7 +39,8 @@ const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemType
 		}
 	}, [selectedItemTypeId, selectedSection]);
 
-	// console.log({ selectedItemTypeId })
+	console.log({ selectedItemTypeId })
+	console.log({ itemsToShow })
 	const handleGetItemsByItemType = async () => {
 		const itemsResponse = await fetch(`${BASE_API_URL}${SECTIONS_ENDPOINT}items/${selectedSection ? selectedSection : "0"}/type/${selectedItemTypeId}`, {
 			method: "GET",
