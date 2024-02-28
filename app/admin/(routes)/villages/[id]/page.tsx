@@ -39,6 +39,8 @@ export default async function SingleVillagePage({
     const sections: any[] = village?.sections! || [];
     const items: any[] = village?.items! || [];
 
+    // console.log(village)
+
     return (
         <div>
             <Suspense fallback={<CardsLoadingSkeleton />}>
