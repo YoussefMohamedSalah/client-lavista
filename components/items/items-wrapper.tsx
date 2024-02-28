@@ -26,10 +26,19 @@ interface Props {
 }
 
 const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemTypes }: Props) => {
-	const [itemsToShow, setItemsToShow] = useState<any[]>([...items]);
+	const [initialized, setInitialized] = useState<boolean>(false);
+	const [itemsToShow, setItemsToShow] = useState<any[]>([]);
+
 	const [selectedSection, setSelectedSection] = useState<string>("");
 	const [selectedItemTypeId, setSelectedItemTypeId] = useState<string>("");
 	const [selectedItemType, setSelectedItemType] = useState<string>("");
+
+	useEffect(() => {
+		if (!initialized) {
+			setItemsToShow([...items]);
+			setInitialized(true);
+		}
+	}, [initialized]);
 
 	useEffect(() => {
 		if (selectedItemTypeId) {
@@ -54,7 +63,7 @@ const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemType
 		});
 
 		const itemData: any = await itemsResponse.json();
-		setItemsToShow([...itemData])
+		setItemsToShow(itemData)
 	}
 
 	return (
