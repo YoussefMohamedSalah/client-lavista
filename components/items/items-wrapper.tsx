@@ -41,11 +41,9 @@ const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemType
 	}, [initialized]);
 
 	useEffect(() => {
-		if (selectedItemTypeId) {
-			let selectedItemType = itemTypes.find((itemType) => itemType.id === selectedItemTypeId)
-			if (selectedItemType) setSelectedItemType(selectedItemType)
-			handleGetItemsByItemType();
-		}
+		let selectedItemType = itemTypes.find((itemType) => itemType.id === selectedItemTypeId)
+		if (selectedItemType) setSelectedItemType(selectedItemType)
+		handleGetItemsByItemType();
 	}, [selectedItemTypeId, selectedSection]);
 
 	const handleGetItemsByItemType = async () => {
@@ -63,7 +61,7 @@ const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemType
 		});
 
 		const itemData: any = await itemsResponse.json();
-		setItemsToShow(itemData)
+		setItemsToShow([...itemData]);
 	}
 
 	return (
