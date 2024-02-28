@@ -40,17 +40,21 @@ const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemType
 	}, [selectedItemTypeId, selectedSection]);
 
 	const handleGetItemsByItemType = async () => {
-		const itemsResponse = await fetch(`${BASE_API_URL}${SECTIONS_ENDPOINT}items/${selectedSection ? selectedSection : "0"}/type/${selectedItemTypeId}`, {
-			method: "GET",
+		let idsObj = {
+			sectionId: selectedSection ? selectedSection : "0",
+			itemTypeId: selectedItemTypeId
+		}
+		const itemsResponse = await fetch(`${BASE_API_URL}${SECTIONS_ENDPOINT}items/${villageId}`, {
+			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 				Authorization: `Bearer ${token}`,
 			},
+			body: JSON.stringify(idsObj)
 		});
 
-		const itemTypeData: any = await itemsResponse.json();
-		console.log(itemTypeData)
-		setItemsToShow([...itemTypeData.items])
+		const itemData: any = await itemsResponse.json();
+		setItemsToShow([...itemData])
 	}
 
 	return (
