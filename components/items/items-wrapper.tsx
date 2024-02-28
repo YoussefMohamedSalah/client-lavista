@@ -39,8 +39,6 @@ const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemType
 		}
 	}, [selectedItemTypeId, selectedSection]);
 
-	console.log({ selectedItemTypeId })
-	console.log({ itemsToShow })
 	const handleGetItemsByItemType = async () => {
 		const itemsResponse = await fetch(`${BASE_API_URL}${SECTIONS_ENDPOINT}items/${selectedSection ? selectedSection : "0"}/type/${selectedItemTypeId}`, {
 			method: "GET",
@@ -50,8 +48,9 @@ const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemType
 			},
 		});
 
-		const filteredItems: any = await itemsResponse.json();
-		setItemsToShow([...filteredItems])
+		const itemTypeData: any = await itemsResponse.json();
+		console.log(itemTypeData)
+		setItemsToShow([...itemTypeData.items])
 	}
 
 	return (
