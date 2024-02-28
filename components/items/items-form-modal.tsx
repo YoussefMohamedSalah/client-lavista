@@ -10,9 +10,10 @@ interface Props {
     itemTypes: any[];
     defaultItemType: any;
     selectedSectionId: string;
+    closeModal: (item: any) => void;
 }
 
-const ItemsFormModal = ({ itemTypes, defaultItemType, selectedSectionId }: Props) => {
+const ItemsFormModal = ({ itemTypes, defaultItemType, selectedSectionId, closeModal }: Props) => {
     const [isModal, setIsModal] = useState<boolean>(false);
     const [selectedItemType, setSelectedItemType] = useState<any>({});
 
@@ -20,11 +21,11 @@ const ItemsFormModal = ({ itemTypes, defaultItemType, selectedSectionId }: Props
         setSelectedItemType(defaultItemType)
     }, [defaultItemType])
 
-    const handleModelClose = () => {
-        setIsModal(false);
-        if (typeof window !== "undefined") {
-            window.location.reload();
+    const handleModelClose = (item: any) => {
+        if (item) {
+            closeModal(item);
         }
+        setIsModal(false);
     }
 
     return (
@@ -44,14 +45,14 @@ const ItemsFormModal = ({ itemTypes, defaultItemType, selectedSectionId }: Props
                         })}
                     </div>
                     {selectedItemType ? (<>
-                        {selectedItemType?.name! === "Motor" && <MotorItemForm itemTypeId={selectedItemType?.id!} sectionId={selectedSectionId} />}
-                        {selectedItemType?.name! === "Filter" && <FilterItemForm itemTypeId={selectedItemType?.id!} sectionId={selectedSectionId} />}
-                        {selectedItemType?.name! === "Elec Panel" && <ElcItemForm itemTypeId={selectedItemType?.id!} sectionId={selectedSectionId} />}
-                        {selectedItemType?.name! === "Pool" && <PoolItemForm itemTypeId={selectedItemType?.id!} sectionId={selectedSectionId} />}
+                        {selectedItemType?.name! === "Motor" && <MotorItemForm closeModal={handleModelClose} itemTypeId={selectedItemType?.id!} sectionId={selectedSectionId} />}
+                        {selectedItemType?.name! === "Filter" && <FilterItemForm closeModal={handleModelClose} itemTypeId={selectedItemType?.id!} sectionId={selectedSectionId} />}
+                        {selectedItemType?.name! === "Elec Panel" && <ElcItemForm closeModal={handleModelClose} itemTypeId={selectedItemType?.id!} sectionId={selectedSectionId} />}
+                        {selectedItemType?.name! === "Pool" && <PoolItemForm closeModal={handleModelClose} itemTypeId={selectedItemType?.id!} sectionId={selectedSectionId} />}
                     </>) : <p className="self-center text-2xl">Please Select Item Type!</p>}
 
                     <div className="modal-action">
-                        <button className="btn bg-destructive text-white" onClick={handleModelClose}>Close</button>
+                        <button className="btn bg-destructive text-white" onClick={() => handleModelClose("")}>Close</button>
                     </div>
                 </div>
             </dialog>

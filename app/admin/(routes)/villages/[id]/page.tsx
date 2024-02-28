@@ -37,7 +37,6 @@ export default async function SingleVillagePage({
     const village: any = await villageResponse.json();
     let villageName = village?.name! || "Village";
     const sections: any[] = village?.sections! || [];
-    // const items: any[] = village?.items! || [];
 
     return (
         <div>

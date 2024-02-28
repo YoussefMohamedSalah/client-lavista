@@ -145,7 +145,6 @@ async function createPoolItem({
     itemTypeId,
     sectionId,
     name,
-
     details,
     state,
     notes,
@@ -154,7 +153,6 @@ async function createPoolItem({
         itemTypeId,
         sectionId,
         name,
-
         details,
         state,
         notes,
@@ -165,7 +163,6 @@ async function createElecItem({
     sectionId,
     itemTypeId,
     name,
-
     details,
     state,
     notes,
@@ -173,7 +170,6 @@ async function createElecItem({
     return await fetchWrapper.post(`${ITEM_URL}${sectionId}`, {
         itemTypeId,
         name,
-
         details,
         state,
         notes,
@@ -185,7 +181,6 @@ async function createElecItem({
 async function editItem(
     id: string,
     name: string,
-    brand: string,
     hp: string,
     amp: string,
     phase: string,

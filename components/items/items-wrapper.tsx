@@ -19,7 +19,6 @@ import { PageHeader } from '../page-header';
 interface Props {
 	villageName: string;
 	villageId: string;
-	// items: any[];
 	sections: any[];
 	token: string;
 	itemTypes: any[];
@@ -43,7 +42,11 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 		if (initialized) {
 			let selectedItemType = itemTypes.find((itemType) => itemType.id === selectedItemTypeId)
 			if (selectedItemType) setSelectedItemType(selectedItemType)
-			handleGetItemsByItemType();
+			if (selectedSection.length > 2 && selectedItemTypeId.length > 2) {
+				handleGetItemsByItemType();
+			} else if (selectedSection === "0" && selectedItemTypeId.length > 2) {
+				handleGetItemsByItemType();
+			}
 		}
 	}, [selectedItemTypeId, selectedSection]);
 
@@ -52,7 +55,7 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 			sectionId: selectedSection ? selectedSection : "0",
 			itemTypeId: selectedItemTypeId
 		}
-		const itemsResponse = await fetch(`${BASE_API_URL}${SECTIONS_ENDPOINT}items/${villageId}`, {
+		const itemsResponse = await fetch(`${BASE_API_URL}${SECTIONS_ENDPOINT}items/village/${villageId}`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -121,7 +124,7 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 				</div>
 			</div>
 			{/* TABLES */}
-			<ItemsTable items={itemsToShow} selectedItemType={selectedItemType} itemTypes={itemTypes} selectedSectionId={selectedSection} />
+			<ItemsTable token={token} items={itemsToShow} selectedItemType={selectedItemType} itemTypes={itemTypes} selectedSectionId={selectedSection} />
 		</>
 	)
 }

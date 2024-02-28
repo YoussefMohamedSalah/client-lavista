@@ -15,9 +15,6 @@ export const motorItemFormSchema = z.object({
     phase: z
         .string()
         .min(2, { message: "Item Phase should be minimum 2 characters" }),
-    brand: z
-        .string()
-        .min(2, { message: "Item Brand should be minimum 2 characters" }),
     capacitor: z
         .string(),
     front_bearing: z

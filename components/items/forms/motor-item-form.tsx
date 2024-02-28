@@ -20,15 +20,19 @@ import {
     FormLabel,
     FormMessage
 } from "@/components/ui/form";
+import { MotorType } from "@/types/item";
 
 type FormData = z.infer<typeof motorItemFormSchema>;
 
 interface Props {
     itemTypeId: string;
     sectionId: string;
+    selectedItem?: any;
+    handleEdit?: (item: MotorType) => void;
+    closeModal?: (item: any) => void;
 }
 
-export default function MotorItemForm({ sectionId, itemTypeId }: Props) {
+export default function MotorItemForm({ sectionId, itemTypeId, selectedItem, handleEdit, closeModal }: Props) {
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const router = useRouter();
     const { toast } = useToast();
@@ -36,38 +40,53 @@ export default function MotorItemForm({ sectionId, itemTypeId }: Props) {
         resolver: zodResolver(motorItemFormSchema)
     });
 
+    React.useEffect(() => {
+        if (selectedItem) {
+            form.reset(selectedItem);
+        } else {
+            form.reset();
+        }
+    }, [selectedItem, form.reset]);
+
     async function onSubmit(data: FormData) {
         setIsLoading(true);
-
-        const createMotorObj: MotorCreateType = {
-            sectionId: sectionId,
-            itemTypeId: itemTypeId,
-            name: data.name,
-            serial_num: data.serial_num,
-            hp: data.hp,
-            amp: data.amp,
-            phase: data.phase,
-            capacitor: data.capacitor,
-            front_bearing: data.front_bearing,
-            back_bearing: data.back_bearing,
-            q: data.q,
-            h: data.h,
-            mechanical_seal: data.mechanical_seal,
-            o_ring: data.o_ring,
-            pump_type: data.pump_type,
-            details: data.details,
-            state: data.state,
-            notes: data.notes,
-        }
-        const apiResponse = await itemService.createMotorItem(createMotorObj);
-        setIsLoading(false);
-        if (!apiResponse.error) {
-            router.refresh();
+        if (handleEdit && selectedItem) {
+            handleEdit({ id: selectedItem.id, ...data });
+            setIsLoading(false);
         } else {
-            toast({
-                variant: "destructive",
-                title: "An unexpected error occured."
-            });
+            const createMotorObj: MotorCreateType = {
+                sectionId: sectionId,
+                itemTypeId: itemTypeId,
+                name: data.name,
+                serial_num: data.serial_num,
+                hp: data.hp,
+                amp: data.amp,
+                phase: data.phase,
+                capacitor: data.capacitor,
+                front_bearing: data.front_bearing,
+                back_bearing: data.back_bearing,
+                q: data.q,
+                h: data.h,
+                mechanical_seal: data.mechanical_seal,
+                o_ring: data.o_ring,
+                pump_type: data.pump_type,
+                details: data.details,
+                state: data.state,
+                notes: data.notes,
+            }
+            const apiResponse = await itemService.createMotorItem(createMotorObj);
+            setIsLoading(false);
+            if (closeModal && apiResponse) {
+                closeModal(apiResponse);
+            }
+            if (!apiResponse.error) {
+                router.refresh();
+            } else {
+                toast({
+                    variant: "destructive",
+                    title: "An unexpected error occured."
+                });
+            }
         }
     }
 
@@ -294,7 +313,7 @@ export default function MotorItemForm({ sectionId, itemTypeId }: Props) {
                     className="w-full mt-2"
                 >
                     {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-                    Create
+                    {selectedItem ? "Edit" : "Create"}
                 </Button>
             </form>
         </Form>

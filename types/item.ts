@@ -1,5 +1,5 @@
 export type Item = {
-    id: number;
+    id?: string;
     code: string;
     name: string;
     count: string;
@@ -14,6 +14,7 @@ export type Item = {
 
 
 export interface MotorType {
+    id?: string;
     name: string,
     serial_num: string;
     hp: string,
@@ -33,6 +34,7 @@ export interface MotorType {
 }
 
 export interface FilterType {
+    id?: string;
     name: string,
     state: string,
     filter_type: string,
@@ -48,6 +50,7 @@ export interface FilterType {
 }
 
 export interface PoolType {
+    id?: string;
     name: string,
     details: string,
     state: string,
@@ -55,6 +58,7 @@ export interface PoolType {
 }
 
 export interface ElecType {
+    id?: string;
     name: string,
     state: string,
     notes: string,

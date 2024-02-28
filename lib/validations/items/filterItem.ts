@@ -35,6 +35,5 @@ export const filterItemFormSchema = z.object({
         .min(2, { message: "O Ring should be minimum 2 characters" }),
     notes: z
         .string()
-        .min(2, { message: "Notes should be minimum 2 characters" }),
 
 });

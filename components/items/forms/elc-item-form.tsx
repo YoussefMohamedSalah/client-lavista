@@ -7,7 +7,6 @@ import * as React from "react";
 import { useToast } from "../../ui/use-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { villageService } from "@/services/village.service";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/icons";
@@ -21,15 +20,19 @@ import {
     FormMessage
 } from "@/components/ui/form";
 import { ElecCreateType, itemService } from "@/services/item.service";
+import { ElecType } from "@/types/item";
 
 type FormData = z.infer<typeof elecItemFormSchema>;
 
 interface Props {
     itemTypeId: string;
     sectionId: string;
+    selectedItem?: any;
+    handleEdit?: (item: ElecType) => void;
+    closeModal?: (item: any) => void;
 }
 
-export default function ElcItemForm({ sectionId, itemTypeId }: Props) {
+export default function ElcItemForm({ sectionId, itemTypeId, selectedItem, handleEdit, closeModal }: Props) {
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
     const router = useRouter();
     const { toast } = useToast();
@@ -37,26 +40,41 @@ export default function ElcItemForm({ sectionId, itemTypeId }: Props) {
         resolver: zodResolver(elecItemFormSchema)
     });
 
+    React.useEffect(() => {
+        if (selectedItem) {
+            form.reset(selectedItem);
+        } else {
+            form.reset();
+        }
+    }, [selectedItem, form.reset]);
+
     async function onSubmit(data: FormData) {
         setIsLoading(true);
-        const createElecObj: ElecCreateType = {
-            sectionId: sectionId,
-            itemTypeId: itemTypeId,
-            name: data.name,
-            details: data.details,
-            state: data.state,
-            notes: data.notes,
-        }
-
-        const apiResponse = await itemService.createElecItem(createElecObj);
-        setIsLoading(false);
-        if (!apiResponse.error) {
-            router.refresh();
+        if (handleEdit && selectedItem) {
+            handleEdit({ id: selectedItem.id, ...data });
+            setIsLoading(false);
         } else {
-            toast({
-                variant: "destructive",
-                title: "An unexpected error occured."
-            });
+            const createElecObj: ElecCreateType = {
+                sectionId: sectionId,
+                itemTypeId: itemTypeId,
+                name: data.name,
+                details: data.details,
+                state: data.state,
+                notes: data.notes,
+            }
+            const apiResponse = await itemService.createElecItem(createElecObj);
+            setIsLoading(false);
+            if (closeModal && apiResponse) {
+                closeModal(apiResponse);
+            }
+            if (!apiResponse.error) {
+                router.refresh();
+            } else {
+                toast({
+                    variant: "destructive",
+                    title: "An unexpected error occured."
+                });
+            }
         }
     }
 
@@ -126,7 +144,7 @@ export default function ElcItemForm({ sectionId, itemTypeId }: Props) {
                     className="w-full mt-2"
                 >
                     {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-                    Create
+                    {selectedItem ? "Edit" : "Create"}
                 </Button>
             </form>
         </Form>
