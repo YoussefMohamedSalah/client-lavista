@@ -37,14 +37,12 @@ export default async function SingleVillagePage({
     const village: any = await villageResponse.json();
     let villageName = village?.name! || "Village";
     const sections: any[] = village?.sections! || [];
-    const items: any[] = village?.items! || [];
-
-    // console.log(village)
+    // const items: any[] = village?.items! || [];
 
     return (
         <div>
             <Suspense fallback={<CardsLoadingSkeleton />}>
-                <ItemsWrapper villageName={villageName} villageId={params.id} items={items} sections={sections} token={session?.user.accessToken || ""} itemTypes={itemTypes} />
+                <ItemsWrapper villageName={villageName} villageId={params.id} sections={sections} token={session?.user.accessToken || ""} itemTypes={itemTypes} />
             </Suspense>
         </div>
     );

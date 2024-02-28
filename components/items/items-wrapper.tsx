@@ -19,13 +19,13 @@ import { PageHeader } from '../page-header';
 interface Props {
 	villageName: string;
 	villageId: string;
-	items: any[];
+	// items: any[];
 	sections: any[];
 	token: string;
 	itemTypes: any[];
 }
 
-const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemTypes }: Props) => {
+const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Props) => {
 	const [initialized, setInitialized] = useState<boolean>(false);
 	const [itemsToShow, setItemsToShow] = useState<any[]>([]);
 
@@ -35,10 +35,9 @@ const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemType
 
 	useEffect(() => {
 		if (!initialized) {
-			setItemsToShow([...items]);
 			setInitialized(true);
 		}
-	}, [initialized]);
+	}, []);
 
 	useEffect(() => {
 		if (initialized) {
@@ -66,6 +65,9 @@ const ItemsWrapper = ({ villageName, villageId, items, sections, token, itemType
 		setItemsToShow([...itemData]);
 	}
 
+	// console.log(itemsToShow)
+
+	// if (!initialized) return <></>
 	return (
 		<>
 			<PageHeader heading={`${villageName} Details`} text={`Add Sections To ${villageName}`}>

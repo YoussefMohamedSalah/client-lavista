@@ -13,7 +13,6 @@ interface ItemsTableProps {
 }
 
 async function ItemsTable({ items, selectedItemType, itemTypes, selectedSectionId }: ItemsTableProps) {
-
     return (
         <div className="px-2 py-10">
             <Suspense fallback={<DataTableLoading columnCount={5} rowCount={5} />}>

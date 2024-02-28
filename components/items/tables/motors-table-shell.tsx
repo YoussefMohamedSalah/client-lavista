@@ -17,8 +17,12 @@ interface MotorsTableShellProps {
 }
 
 export function MotorsItemsTableShell({ data, pageCount, itemTypes, selectedItemType, selectedSectionId }: MotorsTableShellProps) {
-    const [filteredData, setFilteredData] = React.useState<any[]>(data);
+    const [filteredData, setFilteredData] = React.useState<any[]>([...data]);
     const [filteredValue, setFilteredValue] = React.useState<string>("");
+
+    React.useEffect(() => {
+        setFilteredData([...data])
+    }, [data])
 
     React.useEffect(() => {
         handleFilterItems(filteredValue)
