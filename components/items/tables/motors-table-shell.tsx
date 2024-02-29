@@ -98,7 +98,7 @@ export function MotorsItemsTableShell({ data, pageCount, itemTypes, selectedItem
                 },
             });
             if (delRes) {
-                refetch(selectedSectionId, selectedItemType.id)
+                refetch()
                 return true;
             }
         } catch (error) {
@@ -115,7 +115,7 @@ export function MotorsItemsTableShell({ data, pageCount, itemTypes, selectedItem
     const handleModelClose = () => {
         setIsModal(false);
         if (selectedItemType) {
-            refetch(selectedSectionId, selectedItemType.id)
+            refetch()
         }
     };
 
