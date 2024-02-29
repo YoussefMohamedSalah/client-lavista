@@ -37,10 +37,11 @@ interface UsersTableShellProps {
     itemTypes: any[];
     selectedItemType: any;
     selectedSectionId: string;
-    token: string
+    token: string;
+    refetch: () => void;
 }
 
-export function FiltersItemsTableShell({ data, pageCount, itemTypes, selectedItemType, selectedSectionId, token }: UsersTableShellProps) {
+export function FiltersItemsTableShell({ data, pageCount, itemTypes, selectedItemType, selectedSectionId, token, refetch }: UsersTableShellProps) {
     const [initialized, setInitialized] = React.useState<boolean>(false);
     const [items, setItems] = React.useState<any[]>([])
     const [filteredData, setFilteredData] = React.useState<any[]>([]);
@@ -48,7 +49,7 @@ export function FiltersItemsTableShell({ data, pageCount, itemTypes, selectedIte
     const [selectedItem, setSelectedItem] = React.useState<FilterType>({} as FilterType);
 
     React.useEffect(() => {
-        setFilteredData([...data])
+        setItems([...data])
     }, [data])
 
     React.useEffect(() => {
@@ -93,8 +94,7 @@ export function FiltersItemsTableShell({ data, pageCount, itemTypes, selectedIte
             });
 
             if (delRes) {
-                let updatedData = items.filter((item) => item.id !== id)
-                setItems(updatedData)
+                refetch()
                 return true;
             }
         } catch (error) {
@@ -392,7 +392,7 @@ export function FiltersItemsTableShell({ data, pageCount, itemTypes, selectedIte
                                                 if (deleted) {
                                                     setIsDeleteLoading(false);
                                                     setShowDeleteAlert(false);
-                                                    router.refresh();
+                                                    // router.refresh();
                                                 }
                                             }}
                                             className="bg-red-600 focus:ring-red-600"

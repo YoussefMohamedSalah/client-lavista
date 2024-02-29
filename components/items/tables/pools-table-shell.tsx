@@ -38,19 +38,20 @@ interface UsersTableShellProps {
     itemTypes: any[];
     selectedItemType: any;
     selectedSectionId: string;
-    token: string
+    token: string;
+    refetch: () => void;
 }
 
-export function PoolsItemsTableShell({ data, pageCount, itemTypes, selectedItemType, selectedSectionId, token }: UsersTableShellProps) {
+export function PoolsItemsTableShell({ data, pageCount, itemTypes, selectedItemType, selectedSectionId, token, refetch }: UsersTableShellProps) {
     const [initialized, setInitialized] = React.useState<boolean>(false);
-    const [items, setItems] = React.useState<any[]>([])
+    const [items, setItems] = React.useState<any[]>([...data])
     const [filteredData, setFilteredData] = React.useState<any[]>([]);
     const [filteredValue, setFilteredValue] = React.useState<string>("");
     const [isModal, setIsModal] = React.useState<boolean>(false);
     const [selectedItem, setSelectedItem] = React.useState<PoolType>({} as PoolType);
 
     React.useEffect(() => {
-        setFilteredData([...data])
+        setItems([...data])
     }, [data])
 
     React.useEffect(() => {
@@ -86,8 +87,7 @@ export function PoolsItemsTableShell({ data, pageCount, itemTypes, selectedItemT
                 },
             });
             if (delRes) {
-                let updatedData = items?.filter((item) => item.id !== id)! || [];
-                setItems(updatedData)
+                refetch()
                 return true;
             }
         } catch (error) {
@@ -275,7 +275,7 @@ export function PoolsItemsTableShell({ data, pageCount, itemTypes, selectedItemT
                                                 if (deleted) {
                                                     setIsDeleteLoading(false);
                                                     setShowDeleteAlert(false);
-                                                    router.refresh();
+                                                    // router.refresh();
                                                 }
                                             }}
                                             className="bg-red-600 focus:ring-red-600"

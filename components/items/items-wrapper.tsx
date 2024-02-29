@@ -38,6 +38,15 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 		}
 	}, []);
 
+	const handleRefetch = () => {
+		console.log("REFETCHING")
+		if (selectedSection.length > 2 && selectedItemTypeId.length > 2) {
+			handleGetItemsByItemType();
+		} else if (selectedSection === "0" && selectedItemTypeId.length > 2) {
+			handleGetItemsByItemType();
+		}
+	}
+
 	useEffect(() => {
 		if (initialized) {
 			let selectedItemType = itemTypes.find((itemType) => itemType.id === selectedItemTypeId)
@@ -124,7 +133,7 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 				</div>
 			</div>
 			{/* TABLES */}
-			<ItemsTable token={token} items={itemsToShow} selectedItemType={selectedItemType} itemTypes={itemTypes} selectedSectionId={selectedSection} />
+			<ItemsTable refetch={handleRefetch} token={token} items={itemsToShow} selectedItemType={selectedItemType} itemTypes={itemTypes} selectedSectionId={selectedSection} />
 		</>
 	)
 }

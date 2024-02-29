@@ -37,10 +37,11 @@ interface MotorsTableShellProps {
     itemTypes: any[];
     selectedItemType: any;
     selectedSectionId: string;
-    token: string
+    token: string;
+    refetch: () => void;
 }
 
-export function MotorsItemsTableShell({ data, pageCount, itemTypes, selectedItemType, selectedSectionId, token }: MotorsTableShellProps) {
+export function MotorsItemsTableShell({ data, pageCount, itemTypes, selectedItemType, selectedSectionId, token, refetch }: MotorsTableShellProps) {
     const [initialized, setInitialized] = React.useState<boolean>(false);
     const [items, setItems] = React.useState<any[]>([])
     const [filteredData, setFilteredData] = React.useState<any[]>([]);
@@ -49,7 +50,7 @@ export function MotorsItemsTableShell({ data, pageCount, itemTypes, selectedItem
     const [selectedItem, setSelectedItem] = React.useState<MotorType>({} as MotorType);
 
     React.useEffect(() => {
-        setFilteredData([...data])
+        setItems([...data])
     }, [data])
 
     React.useEffect(() => {
@@ -96,10 +97,8 @@ export function MotorsItemsTableShell({ data, pageCount, itemTypes, selectedItem
                     Authorization: `Bearer ${token}`,
                 },
             });
-
             if (delRes) {
-                let updatedData = items.filter((item) => item.id !== id)
-                setItems(updatedData)
+                refetch()
                 return true;
             }
         } catch (error) {
@@ -472,7 +471,7 @@ export function MotorsItemsTableShell({ data, pageCount, itemTypes, selectedItem
                                                 if (deleted) {
                                                     setIsDeleteLoading(false);
                                                     setShowDeleteAlert(false);
-                                                    router.refresh();
+                                                    // router.refresh();
                                                 }
                                             }}
                                             className="bg-red-600 focus:ring-red-600"
