@@ -104,7 +104,7 @@ export function PoolsItemsTableShell({ data, pageCount, itemTypes, selectedItemT
     const handleModelClose = (item: any) => {
         setIsModal(false);
         if (item) {
-            setItems([item, ...items])
+            refetch()
         }
     };
 

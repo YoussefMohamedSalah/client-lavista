@@ -111,7 +111,7 @@ export function FiltersItemsTableShell({ data, pageCount, itemTypes, selectedIte
     const handleModelClose = (item: any) => {
         setIsModal(false);
         if (item) {
-            setItems([item, ...filteredData])
+            refetch()
         }
     };
 

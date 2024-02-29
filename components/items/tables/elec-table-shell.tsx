@@ -104,7 +104,7 @@ export function ElecItemsTableShell({ data, pageCount, itemTypes, selectedItemTy
     const handleModelClose = (item: any) => {
         setIsModal(false);
         if (item) {
-            setItems([item, ...items])
+            refetch()
         }
     };
 

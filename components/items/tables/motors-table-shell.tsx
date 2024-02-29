@@ -115,7 +115,7 @@ export function MotorsItemsTableShell({ data, pageCount, itemTypes, selectedItem
     const handleModelClose = (item: any) => {
         setIsModal(false);
         if (item) {
-            setItems([item, ...filteredData])
+            refetch()
         }
     };
 
