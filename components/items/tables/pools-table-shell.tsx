@@ -101,9 +101,9 @@ export function PoolsItemsTableShell({ data, pageCount, itemTypes, selectedItemT
         setIsModal(true);
     }
 
-    const handleModelClose = (item: any) => {
+    const handleModelClose = () => {
         setIsModal(false);
-        if (item) {
+        if (selectedItemType) {
             refetch()
         }
     };
@@ -275,7 +275,6 @@ export function PoolsItemsTableShell({ data, pageCount, itemTypes, selectedItemT
                                                 if (deleted) {
                                                     setIsDeleteLoading(false);
                                                     setShowDeleteAlert(false);
-                                                    // router.refresh();
                                                 }
                                             }}
                                             className="bg-red-600 focus:ring-red-600"
@@ -344,7 +343,7 @@ export function PoolsItemsTableShell({ data, pageCount, itemTypes, selectedItemT
                 <div className="modal-box flex flex-col justify-between lg:min-w-[800px] min-h-[60vh]">
                     {selectedItem && <PoolItemForm closeModal={handleModelClose} selectedItem={selectedItem} handleEdit={handleEdit} itemTypeId={selectedItemType?.id!} sectionId={selectedSectionId} />}
                     <div className="modal-action">
-                        <button className="btn bg-destructive text-white" onClick={() => handleModelClose("")}>Close</button>
+                        <button className="btn bg-destructive text-white" onClick={handleModelClose}>Close</button>
                     </div>
                 </div>
             </dialog>

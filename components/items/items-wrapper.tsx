@@ -27,7 +27,6 @@ interface Props {
 const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Props) => {
 	const [initialized, setInitialized] = useState<boolean>(false);
 	const [itemsToShow, setItemsToShow] = useState<any[]>([]);
-
 	const [selectedSection, setSelectedSection] = useState<string>("");
 	const [selectedItemTypeId, setSelectedItemTypeId] = useState<string>("");
 	const [selectedItemType, setSelectedItemType] = useState<string>("");
@@ -38,46 +37,44 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 		}
 	}, []);
 
-	const handleRefetch = () => {
-		console.log("REFETCHING")
-		if (selectedSection.length > 2 && selectedItemTypeId.length > 2) {
-			handleGetItemsByItemType();
-		} else if (selectedSection === "0" && selectedItemTypeId.length > 2) {
-			handleGetItemsByItemType();
+	const handleRefetch = async () => {
+		if (typeof window !== "undefined") {
+			let sectionId = localStorage.getItem("sectionId");
+			let itemTypeId = localStorage.getItem("itemTypeId");
+			if (sectionId && itemTypeId && sectionId !== "undefined" && itemTypeId !== "undefined" && itemTypeId !== "0") {
+				let idsObj = {
+					sectionId: sectionId ? sectionId : "0",
+					itemTypeId: itemTypeId
+				}
+				const itemsResponse = await fetch(`${BASE_API_URL}${SECTIONS_ENDPOINT}items/village/${villageId}`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+					body: JSON.stringify(idsObj)
+				});
+				const itemData: any = await itemsResponse.json();
+				setItemsToShow([...itemData]);
+				setSelectedSection(sectionId);
+				setSelectedItemTypeId(itemTypeId)
+			}
 		}
 	}
 
 	useEffect(() => {
 		if (initialized) {
-			let selectedItemType = itemTypes.find((itemType) => itemType.id === selectedItemTypeId)
-			if (selectedItemType) setSelectedItemType(selectedItemType)
-			if (selectedSection.length > 2 && selectedItemTypeId.length > 2) {
-				handleGetItemsByItemType();
-			} else if (selectedSection === "0" && selectedItemTypeId.length > 2) {
-				handleGetItemsByItemType();
+			let selectedItemType = itemTypes.find((itemType) => itemType.id === selectedItemTypeId);
+			if (selectedItemType) setSelectedItemType(selectedItemType);
+			if (typeof window !== "undefined") {
+				localStorage.setItem("sectionId", selectedSection || "0");
+				localStorage.setItem("itemTypeId", selectedItemType?.id! || "0");
 			}
+			handleRefetch()
 		}
 	}, [selectedItemTypeId, selectedSection]);
 
-	const handleGetItemsByItemType = async () => {
-		let idsObj = {
-			sectionId: selectedSection ? selectedSection : "0",
-			itemTypeId: selectedItemTypeId
-		}
-		const itemsResponse = await fetch(`${BASE_API_URL}${SECTIONS_ENDPOINT}items/village/${villageId}`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				Authorization: `Bearer ${token}`,
-			},
-			body: JSON.stringify(idsObj)
-		});
-
-		const itemData: any = await itemsResponse.json();
-		setItemsToShow([...itemData]);
-	}
-
-	// if (!initialized) return <></>
+	if (!initialized) return <></>
 	return (
 		<>
 			<PageHeader heading={`${villageName} Details`} text={`Add Sections To ${villageName}`}>

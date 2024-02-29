@@ -29,7 +29,7 @@ interface Props {
     sectionId: string;
     selectedItem?: any;
     handleEdit?: (item: ElecType) => void;
-    closeModal?: (item: any) => void;
+    closeModal?: () => void;
 }
 
 export default function ElcItemForm({ sectionId, itemTypeId, selectedItem, handleEdit, closeModal }: Props) {
@@ -65,7 +65,7 @@ export default function ElcItemForm({ sectionId, itemTypeId, selectedItem, handl
             const apiResponse = await itemService.createElecItem(createElecObj);
             setIsLoading(false);
             if (closeModal && apiResponse) {
-                closeModal(apiResponse);
+                closeModal();
             }
             if (!apiResponse.error) {
                 router.refresh();

@@ -29,7 +29,7 @@ interface Props {
     sectionId: string;
     selectedItem?: any;
     handleEdit?: (item: MotorType) => void;
-    closeModal?: (item: any) => void;
+    closeModal?: () => void;
 }
 
 export default function MotorItemForm({ sectionId, itemTypeId, selectedItem, handleEdit, closeModal }: Props) {
@@ -77,7 +77,7 @@ export default function MotorItemForm({ sectionId, itemTypeId, selectedItem, han
             const apiResponse = await itemService.createMotorItem(createMotorObj);
             setIsLoading(false);
             if (closeModal && apiResponse) {
-                closeModal(apiResponse);
+                closeModal();
             }
             if (!apiResponse.error) {
                 router.refresh();

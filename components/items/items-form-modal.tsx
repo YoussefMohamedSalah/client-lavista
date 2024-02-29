@@ -10,7 +10,7 @@ interface Props {
     itemTypes: any[];
     defaultItemType: any;
     selectedSectionId: string;
-    closeModal: (item: any) => void;
+    closeModal: () => void;
 }
 
 const ItemsFormModal = ({ itemTypes, defaultItemType, selectedSectionId, closeModal }: Props) => {
@@ -21,10 +21,8 @@ const ItemsFormModal = ({ itemTypes, defaultItemType, selectedSectionId, closeMo
         setSelectedItemType(defaultItemType)
     }, [defaultItemType])
 
-    const handleModelClose = (item: any) => {
-        if (item) {
-            closeModal(item);
-        }
+    const handleModelClose = () => {
+        closeModal();
         setIsModal(false);
     }
 
@@ -52,7 +50,7 @@ const ItemsFormModal = ({ itemTypes, defaultItemType, selectedSectionId, closeMo
                     </>) : <p className="self-center text-2xl">Please Select Item Type!</p>}
 
                     <div className="modal-action">
-                        <button className="btn bg-destructive text-white" onClick={() => handleModelClose("")}>Close</button>
+                        <button className="btn bg-destructive text-white" onClick={handleModelClose}>Close</button>
                     </div>
                 </div>
             </dialog>

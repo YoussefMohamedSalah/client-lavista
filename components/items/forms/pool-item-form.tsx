@@ -29,7 +29,7 @@ interface Props {
 	sectionId: string;
 	selectedItem?: any;
 	handleEdit?: (item: PoolType) => void;
-	closeModal?: (item: any) => void;
+	closeModal?: () => void;
 }
 
 export default function PoolItemForm({ sectionId, itemTypeId, selectedItem, handleEdit, closeModal }: Props) {
@@ -67,7 +67,7 @@ export default function PoolItemForm({ sectionId, itemTypeId, selectedItem, hand
 			const apiResponse = await itemService.createPoolItem(createPoolObj);
 			setIsLoading(false);
 			if (closeModal && apiResponse) {
-				closeModal(apiResponse);
+				closeModal();
 			}
 			if (!apiResponse.error) {
 				router.refresh();

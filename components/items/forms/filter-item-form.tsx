@@ -29,7 +29,7 @@ interface Props {
 	sectionId: string;
 	selectedItem?: any;
 	handleEdit?: (item: FilterType) => void;
-	closeModal?: (item: any) => void;
+	closeModal?: () => void;
 }
 
 export default function FilterItemForm({ sectionId, itemTypeId, selectedItem, handleEdit, closeModal }: Props) {
@@ -75,7 +75,7 @@ export default function FilterItemForm({ sectionId, itemTypeId, selectedItem, ha
 			const apiResponse = await itemService.createFilterItem(createFilterObj);
 			setIsLoading(false);
 			if (closeModal && apiResponse) {
-				closeModal(apiResponse);
+				closeModal();
 			}
 			if (!apiResponse.error) {
 				router.refresh();

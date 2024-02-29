@@ -101,9 +101,9 @@ export function ElecItemsTableShell({ data, pageCount, itemTypes, selectedItemTy
         setIsModal(true);
     }
 
-    const handleModelClose = (item: any) => {
+    const handleModelClose = () => {
         setIsModal(false);
-        if (item) {
+        if (selectedItemType) {
             refetch()
         }
     };
@@ -325,7 +325,7 @@ export function ElecItemsTableShell({ data, pageCount, itemTypes, selectedItemTy
                 <div className="modal-box flex flex-col justify-between lg:min-w-[800px] min-h-[60vh]">
                     {selectedItem && <ElcItemForm closeModal={handleModelClose} selectedItem={selectedItem} handleEdit={handleEdit} itemTypeId={selectedItemType?.id!} sectionId={selectedSectionId} />}
                     <div className="modal-action">
-                        <button className="btn bg-destructive text-white" onClick={() => handleModelClose("")}>Close</button>
+                        <button className="btn bg-destructive text-white" onClick={handleModelClose}>Close</button>
                     </div>
                 </div>
             </dialog>

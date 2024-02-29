@@ -98,7 +98,7 @@ export function MotorsItemsTableShell({ data, pageCount, itemTypes, selectedItem
                 },
             });
             if (delRes) {
-                refetch()
+                refetch(selectedSectionId, selectedItemType.id)
                 return true;
             }
         } catch (error) {
@@ -112,10 +112,10 @@ export function MotorsItemsTableShell({ data, pageCount, itemTypes, selectedItem
         setIsModal(true);
     }
 
-    const handleModelClose = (item: any) => {
+    const handleModelClose = () => {
         setIsModal(false);
-        if (item) {
-            refetch()
+        if (selectedItemType) {
+            refetch(selectedSectionId, selectedItemType.id)
         }
     };
 
@@ -540,7 +540,7 @@ export function MotorsItemsTableShell({ data, pageCount, itemTypes, selectedItem
                 <div className="modal-box flex flex-col justify-between lg:min-w-[800px] min-h-[60vh]">
                     {selectedItem && <MotorItemForm closeModal={handleModelClose} selectedItem={selectedItem} handleEdit={handleEdit} itemTypeId={selectedItemType?.id!} sectionId={selectedSectionId} />}
                     <div className="modal-action">
-                        <button className="btn bg-destructive text-white" onClick={() => handleModelClose("")}>Close</button>
+                        <button className="btn bg-destructive text-white" onClick={handleModelClose}>Close</button>
                     </div>
                 </div>
             </dialog>
