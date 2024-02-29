@@ -36,7 +36,6 @@ export default function UserAuthForm() {
       redirect: false,
     }).then((res) => {
       if (res?.error === null) {
-        console.log(res)
         // Handle successful login
         setIsLoading(false);
         router.push("/admin/dashboard");

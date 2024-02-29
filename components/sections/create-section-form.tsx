@@ -76,7 +76,6 @@ export default function CreateSectionForm({ villageId }: Props) {
                     disabled={isLoading}
                     type="submit"
                     className="w-1/2"
-                    onClick={() => console.log("test")}
                 >
                     {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
                     Create

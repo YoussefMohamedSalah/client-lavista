@@ -77,8 +77,6 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 		setItemsToShow([...itemData]);
 	}
 
-	// console.log(itemsToShow)
-
 	// if (!initialized) return <></>
 	return (
 		<>

@@ -67,7 +67,6 @@ export default function PoolItemForm({ sectionId, itemTypeId, selectedItem, hand
 			const apiResponse = await itemService.createPoolItem(createPoolObj);
 			setIsLoading(false);
 			if (closeModal && apiResponse) {
-				console.log(apiResponse)
 				closeModal(apiResponse);
 			}
 			if (!apiResponse.error) {
