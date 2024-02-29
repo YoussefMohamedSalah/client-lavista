@@ -69,6 +69,11 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 			if (typeof window !== "undefined") {
 				localStorage.setItem("sectionId", selectedSection || "0");
 				localStorage.setItem("itemTypeId", selectedItemType?.id! || "0");
+				if (selectedItemType?.name === "Elec Panel") {
+					localStorage.setItem("itemTypeName", "Elec_Panel");
+				} else {
+					localStorage.setItem("itemTypeName", selectedItemType?.name!);
+				}
 			}
 			handleRefetch()
 		}

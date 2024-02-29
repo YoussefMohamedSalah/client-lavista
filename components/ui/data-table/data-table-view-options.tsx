@@ -13,6 +13,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
 import { replaceUnderscoresWithSpace } from "@/utils/string-utils"
+import React from "react"
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>
@@ -21,6 +22,71 @@ interface DataTableViewOptionsProps<TData> {
 export function DataTableViewOptions<TData>({
   table,
 }: DataTableViewOptionsProps<TData>) {
+  const [initialized, setInitialized] = React.useState<boolean>(false)
+
+  const toggleVisibility = (name: string, state: boolean) => {
+    if (typeof window !== "undefined" && name) {
+      let typeName = localStorage.getItem("itemTypeName");
+      if (typeName) {
+        let selectedView = localStorage.getItem(`${typeName}`)
+        let newArray: string[] = [];
+
+        if (selectedView) {
+          let selectedViewArray = JSON.parse(selectedView);
+          let newArr;
+          for (let i = 0; i < selectedViewArray.length; i++) {
+            const element = selectedViewArray[i];
+            if (element === name && state === false) {
+              newArr = selectedViewArray.filter((item: string) => item !== name);
+              break;
+            } else {
+              newArr = [...selectedViewArray, name]
+            }
+          }
+          newArray = [...newArr];
+        } else {
+          let allKeysExceptThis = table.getAllColumns().filter(
+            (column) =>
+              typeof column.accessorFn !== "undefined" && column.id !== name
+          )
+          for (let i = 0; i < allKeysExceptThis.length; i++) {
+            let element = allKeysExceptThis[i].id;
+            newArray.push(element)
+          }
+        }
+        localStorage.setItem(`${typeName}`, JSON.stringify(newArray))
+      }
+    }
+  }
+
+  const handleVisibility = () => {
+    console.log("ONCE ONCE")
+    // Retrieve the typeName from localStorage
+    let typeName = localStorage.getItem("itemTypeName");
+
+    if (typeName) {
+      let selectedView = localStorage.getItem(`${typeName}`);
+
+      if (selectedView) {
+        let selectedViewArray = JSON.parse(selectedView);
+
+        // Loop through all columns and set visibility based on whether they exist in the selectedViewArray
+        table.getAllColumns().forEach((column) => {
+          const isVisible = selectedViewArray.includes(column.id);
+          column.toggleVisibility(isVisible);
+        });
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    if (!initialized) {
+      handleVisibility()
+      setInitialized(true)
+    }
+  }, [])
+
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -48,7 +114,10 @@ export function DataTableViewOptions<TData>({
                 key={column.id}
                 className="capitalize"
                 checked={column.getIsVisible()}
-                onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                onCheckedChange={(value) => {
+                  toggleVisibility(column.id, !!value)
+                  column.toggleVisibility(!!value)
+                }}
               >
                 {replaceUnderscoresWithSpace(column.id)}
               </DropdownMenuCheckboxItem>
