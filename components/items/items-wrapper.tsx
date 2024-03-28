@@ -1,5 +1,5 @@
 "use client"
-
+import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import CreateSectionForm from '../sections/create-section-form';
 import ItemsTable from './tables/items-table';
@@ -15,6 +15,7 @@ import { SECTIONS_ENDPOINT } from '@/constants/routes';
 import { Label } from "@/components/ui/label"
 import { Button } from '../ui/button';
 import { PageHeader } from '../page-header';
+import ImageCard from '../images/ImageCard';
 
 interface Props {
 	villageName: string;
@@ -30,6 +31,9 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 	const [selectedSection, setSelectedSection] = useState<string>("");
 	const [selectedItemTypeId, setSelectedItemTypeId] = useState<string>("");
 	const [selectedItemType, setSelectedItemType] = useState<string>("");
+	const [showImages, setShowImages] = useState<boolean>(false);
+	const [imagesData, setImagesData] = useState<{ id: string, url: string }[]>([]);
+	const [toUploadFile, setToUploadFile] = useState<File>({} as File);
 
 	useEffect(() => {
 		if (!initialized) {
@@ -55,9 +59,29 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 					body: JSON.stringify(idsObj)
 				});
 				const itemData: any = await itemsResponse.json();
+				console.log(itemData)
 				setItemsToShow([...itemData]);
 				setSelectedSection(sectionId);
 				setSelectedItemTypeId(itemTypeId)
+			}
+
+			if (showImages) {
+				console.log("inside")
+				let idsObj = {
+					sectionId: sectionId ? sectionId : "0",
+					itemTypeId: "images"
+				}
+				const itemsResponse = await fetch(`${BASE_API_URL}${SECTIONS_ENDPOINT}items/village/${villageId}`, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+					body: JSON.stringify(idsObj)
+				});
+				const images: any = await itemsResponse.json();
+				console.log(images)
+				setImagesData([...images]);
 			}
 		}
 	}
@@ -79,7 +103,59 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 		}
 	}, [selectedItemTypeId, selectedSection]);
 
+
+	const handleImageUpload = (e: any) => {
+		let thumbnail: File = e.target.files[0];
+		let reader = new FileReader();
+		reader.readAsDataURL(thumbnail);
+		reader.onload = (url) => {
+			setToUploadFile(thumbnail);
+		}
+	};
+
+	const formatImageUrl = () => {
+		if (toUploadFile) {
+			const reader = new FileReader();
+			reader.readAsDataURL(toUploadFile);
+			reader.onloadend = () => {
+				return reader.result;
+			};
+		} else return "";
+	};
+
+	const handleUpload = async () => {
+		try {
+			if (!toUploadFile || !selectedSection) return;
+
+			// Create form data
+			const formData = new FormData();
+			formData.append('file', toUploadFile);
+
+			// Make API call to upload image
+			const response = await fetch(`/api/image/${selectedSection}`, {
+				method: 'POST',
+				body: formData,
+			});
+
+			// If upload is successful, update state with image URL
+			if (response.ok) {
+				const data = await response.json();
+				setImagesData([...imagesData, { id: String(Math.random()), url: data.imageUrl }]);
+			} else {
+				throw new Error('Failed to upload image');
+			}
+		} catch (error) {
+			console.error('Error uploading image:', error);
+			// Handle error here
+		} finally {
+			// Clear the file to upload
+			setToUploadFile({} as File);
+		}
+	}
+
+
 	if (!initialized) return <></>
+
 	return (
 		<>
 			<PageHeader heading={`${villageName} Details`} text={`Add Sections To ${villageName}`}>
@@ -111,7 +187,8 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 					<Select
 						value={`${selectedItemTypeId || "All"}`}
 						onValueChange={(value) => {
-							setSelectedItemTypeId(value)
+							setSelectedItemTypeId(value !== "Images" ? value : "Images")
+							setShowImages(value === "Images" ? true : false)
 						}}
 					>
 						<SelectTrigger className="h-8 w-[150px] md:w-[250px]">
@@ -123,6 +200,9 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 									{type.name}
 								</SelectItem>
 							))}
+							<SelectItem value={`Images`}>
+								Images
+							</SelectItem>
 						</SelectContent>
 					</Select>
 				</div>
@@ -133,7 +213,32 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 				</div>
 			</div>
 			{/* TABLES */}
-			<ItemsTable refetch={handleRefetch} token={token} items={itemsToShow} selectedItemType={selectedItemType} itemTypes={itemTypes} selectedSectionId={selectedSection} />
+			{showImages ? (
+				<>
+					<input type="file" accept="image/*" onChange={handleImageUpload} />
+					{toUploadFile && toUploadFile.name && (
+						<div className="flex md:flex justify-center align-center">
+							<div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+								<a href="#">
+									<Image className="rounded-t-lg" src={`${formatImageUrl()}`} alt="" width={500} height={500} />
+								</a>
+								<Button className="w-2/2" onClick={handleUpload}>Upload</Button>
+							</div>
+						</div>
+					)}
+					<div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
+						{imagesData.map((image: any, index: number) => (
+							<div key={index} className="w-full sm:w-auto">
+								<div className="bg-white shadow-md rounded-md p-4">
+									<ImageCard src={image.url} />
+								</div>
+							</div>
+						))}
+					</div>
+				</>
+			) : (
+				<ItemsTable refetch={handleRefetch} token={token} items={itemsToShow} selectedItemType={selectedItemType} itemTypes={itemTypes} selectedSectionId={selectedSection} />
+			)}
 		</>
 	)
 }
