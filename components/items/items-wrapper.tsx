@@ -33,7 +33,7 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 	const [selectedItemType, setSelectedItemType] = useState<string>("");
 	const [showImages, setShowImages] = useState<boolean>(false);
 	const [imagesData, setImagesData] = useState<{ id: string, url: string }[]>([]);
-	const [toUploadFile, setToUploadFile] = useState<File>({} as File);
+	const [toUploadFile, setToUploadFile] = useState<File | null>(null);
 
 	useEffect(() => {
 		if (!initialized) {
@@ -59,14 +59,12 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 					body: JSON.stringify(idsObj)
 				});
 				const itemData: any = await itemsResponse.json();
-				console.log(itemData)
 				setItemsToShow([...itemData]);
 				setSelectedSection(sectionId);
 				setSelectedItemTypeId(itemTypeId)
 			}
 
 			if (showImages) {
-				console.log("inside")
 				let idsObj = {
 					sectionId: sectionId ? sectionId : "0",
 					itemTypeId: "images"
@@ -80,7 +78,6 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 					body: JSON.stringify(idsObj)
 				});
 				const images: any = await itemsResponse.json();
-				console.log(images)
 				setImagesData([...images]);
 			}
 		}
@@ -113,26 +110,15 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 		}
 	};
 
-	const formatImageUrl = () => {
-		if (toUploadFile) {
-			const reader = new FileReader();
-			reader.readAsDataURL(toUploadFile);
-			reader.onloadend = () => {
-				return reader.result;
-			};
-		} else return "";
-	};
-
 	const handleUpload = async () => {
 		try {
 			if (!toUploadFile || !selectedSection) return;
-
 			// Create form data
 			const formData = new FormData();
 			formData.append('file', toUploadFile);
 
 			// Make API call to upload image
-			const response = await fetch(`/api/image/${selectedSection}`, {
+			const response = await fetch(`${BASE_API_URL}/image/${selectedSection}`, {
 				method: 'POST',
 				body: formData,
 			});
@@ -149,10 +135,10 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 			// Handle error here
 		} finally {
 			// Clear the file to upload
-			setToUploadFile({} as File);
+			setToUploadFile(null)
+			handleRefetch();
 		}
 	}
-
 
 	if (!initialized) return <></>
 
@@ -214,19 +200,32 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 			</div>
 			{/* TABLES */}
 			{showImages ? (
-				<>
-					<input type="file" accept="image/*" onChange={handleImageUpload} />
+				<div className="flex flex-col items-center justify-center pt-2">
+					<label
+						className="flex cursor-pointer appearance-none justify-center rounded-md border border-dashed border-gray-300 bg-white px-3 py-6 text-sm transition hover:border-gray-400 focus:border-solid focus:border-blue-600 focus:outline-none focus:ring-1 focus:ring-blue-600 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:opacity-75"
+						htmlFor="upload"
+						tabIndex={0}
+					>
+						<span className="flex items-center space-x-2">
+							<svg className="h-6 w-6 stroke-gray-400" viewBox="0 0 256 256">
+								{/* SVG paths */}
+							</svg>
+							<span className="text-xs font-medium text-gray-600">
+								Drop files to Attach, or
+								<span className="text-blue-600 underline">browse</span>
+							</span>
+						</span>
+						<input id="upload" type="file" className="sr-only" onChange={handleImageUpload} />
+					</label>
 					{toUploadFile && toUploadFile.name && (
-						<div className="flex md:flex justify-center align-center">
-							<div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-								<a href="#">
-									<Image className="rounded-t-lg" src={`${formatImageUrl()}`} alt="" width={500} height={500} />
-								</a>
-								<Button className="w-2/2" onClick={handleUpload}>Upload</Button>
-							</div>
-						</div>
+						<>
+							{toUploadFile.name}
+							<Button onClick={handleUpload}>
+								Upload
+							</Button>
+						</>
 					)}
-					<div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
 						{imagesData.map((image: any, index: number) => (
 							<div key={index} className="w-full sm:w-auto">
 								<div className="bg-white shadow-md rounded-md p-4">
@@ -235,7 +234,9 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 							</div>
 						))}
 					</div>
-				</>
+				</div>
+
+
 			) : (
 				<ItemsTable refetch={handleRefetch} token={token} items={itemsToShow} selectedItemType={selectedItemType} itemTypes={itemTypes} selectedSectionId={selectedSection} />
 			)}
