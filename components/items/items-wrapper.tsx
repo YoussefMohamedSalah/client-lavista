@@ -140,6 +140,28 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 		}
 	}
 
+	const onDelete = async (id: string) => {
+		try {
+			const response = await fetch(`${BASE_API_URL}/image/${id}`, {
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			// If upload is successful, update state with image URL
+			if (response.ok) {
+				let filteredImages = imagesData.filter((image) => image.id !== id)
+				setImagesData([...filteredImages]);
+			} else {
+				throw new Error('Failed to delete image');
+			}
+		} catch (error) {
+			console.error('Error deleting image:', error);
+			// Handle error here
+		}
+	}
+
 	if (!initialized) return <></>
 
 	return (
@@ -229,13 +251,12 @@ const ItemsWrapper = ({ villageName, villageId, sections, token, itemTypes }: Pr
 						{imagesData.map((image: any, index: number) => (
 							<div key={index} className="w-full sm:w-auto">
 								<div className="bg-white shadow-md rounded-md p-4">
-									<ImageCard src={image.url} />
+									<ImageCard image={image} onDelete={onDelete} />
 								</div>
 							</div>
 						))}
 					</div>
 				</div>
-
 
 			) : (
 				<ItemsTable refetch={handleRefetch} token={token} items={itemsToShow} selectedItemType={selectedItemType} itemTypes={itemTypes} selectedSectionId={selectedSection} />
